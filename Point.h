@@ -12,9 +12,11 @@ class Point : public TNamed{
     void SetX(Double_t x);
     void SetY(Double_t y);
     void SetZ(Double_t z);
+    void Print();
     Double_t GetX(){return x;}
-    Double_t GetY(){return x;}
-    Double_t GetZ(){return x;}
+    Double_t GetY(){return y;}
+    Double_t GetZ(){return z;}
+    
   private:
     Double_t x;
     Double_t y;
