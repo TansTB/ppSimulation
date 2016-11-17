@@ -7,6 +7,7 @@
 class Point : public TNamed{
   public:
     Point(){}
+    Point(Double_t x, Double_t y, Double_t z);
     Point(const char *name, Double_t x, Double_t y, Double_t z);
     
     void SetX(Double_t x);
