@@ -4,6 +4,7 @@
 #include "Point.h"
 #include "TFile.h"
 #include "TH1D.h"
+#include "TRandom3.h"
 #endif
 
 class VtxGenerator{
