@@ -4,10 +4,10 @@
 #include <TNamed.h>
 #endif
 
-class Track : public TNamed {
+class Track{
   public:
     Track(){}
-    Track(const char *name, Double_t theta, Double_t phi);
+    Track(Double_t theta, Double_t phi);
     
     void SetTheta(Double_t theta);
     void SetPhi(Double_t phi);

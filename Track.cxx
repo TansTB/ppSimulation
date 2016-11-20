@@ -4,7 +4,7 @@
 using namespace TMath;
 using namespace std;
 
-Track::Track(const char *name, Double_t theta, Double_t phi){
+Track::Track(Double_t theta, Double_t phi){
    this->theta = theta;
    this->phi = phi;
    this->SetName(name);
