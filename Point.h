@@ -4,11 +4,10 @@
 #include <TNamed.h>
 #endif
 
-class Point : public TNamed{
+class Point{
   public:
     Point(){}
     Point(Double_t x, Double_t y, Double_t z);
-    Point(const char *name, Double_t x, Double_t y, Double_t z);
     
     void SetX(Double_t x);
     void SetY(Double_t y);
