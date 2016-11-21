@@ -7,7 +7,6 @@ using namespace std;
 Track::Track(Double_t theta, Double_t phi){
    this->theta = theta;
    this->phi = phi;
-   this->SetName(name);
    this->SetComp();
 }
 
