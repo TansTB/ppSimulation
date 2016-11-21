@@ -5,21 +5,21 @@
 #endif
 
 class Point{
-  public:
-    Point(){}
-    Point(Double_t x, Double_t y, Double_t z);
-    
-    void SetX(Double_t x);
-    void SetY(Double_t y);
-    void SetZ(Double_t z);
-    void Print();
-    Double_t GetX(){return x;}
-    Double_t GetY(){return y;}
-    Double_t GetZ(){return z;}
-    
-  private:
-    Double_t x;
-    Double_t y;
-    Double_t z;
+public:
+  Point(){}
+  Point(Double_t x, Double_t y, Double_t z);
+  
+  void SetX(Double_t x);
+  void SetY(Double_t y);
+  void SetZ(Double_t z);
+  void Print();
+  Double_t GetX(){return x;}
+  Double_t GetY(){return y;}
+  Double_t GetZ(){return z;}
+  
+private:
+  Double_t x;
+  Double_t y;
+  Double_t z;
 };
 #endif
