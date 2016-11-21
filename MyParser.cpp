@@ -30,7 +30,29 @@ void CSVParser(ifstream& file_to_parse,vector<vector<string> >& spreadsheet){
       while(1){
 	getline(linestream,field_content,',');
 	spreadsheet.back().push_back(field_content);
-	if (linestream.eof()){break;}
+	if (linestream.eof())break;
+      }
+    }
+  }
+}
+
+void ColonParser(ifstream& file_to_parse,vector<vector<string> >& spreadsheet){
+  vector<string> lines;
+  LineParser(file_to_parse,lines);
+  for (vector<string>::iterator line=lines.begin();line!=lines.end();++line){
+    string field_content;
+    istringstream linestream(*line);
+    if (!linestream.eof()){
+      spreadsheet.push_back(vector<string>());
+      getline(linestream,field_content,':');
+      if (field_content!="//") {
+	spreadsheet.pop_back();
+	continue;
+      }
+      while(1){
+	spreadsheet.back().push_back(field_content);
+	if (linestream.eof())break;
+	getline(linestream,field_content,':');
       }
     }
   }

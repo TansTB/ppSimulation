@@ -15,6 +15,6 @@
 #include <vector>
 
 void LineParser(ifstream&, vector<string>&);//Function to turn a multiple lines file into a vector of strings 
-void CSVParser(vector<string>, vector<vector<string> >&);//Function to turn a vector of lines coming from a .csv in a vector
-							 //of vectors containing the fields. spreadsheet should be empty
+void CSVParser(ifstream& file_to_parse, vector<vector<string> >&);//Function to turn a vector of lines coming from a .csv in a vector
+								  //of vectors containing the fields. spreadsheet should be empty
 #endif

@@ -1,6 +1,6 @@
 #include "VtxGenerator.h"
 
-VtxGenerator::VtxGenerator(const char *input_file_name, const char* input_hist_name){
+VtxGenerator::VtxGenerator(const char* input_file_name, const char* xinput_hist_name,const char* yinput_hist_name,const char* zinput_hist_name){
   this->input_file_name = input_file_name;
   this->input_hist_name=input_hist_name;
   this->input_file = new TFile(input_file_name);
@@ -23,7 +23,7 @@ VtxGenerator::~VtxGenerator(){
   }
 }
 
-void VtxGenerator::SetCustomInput(const char* input_file_name, const char* input_hist_name){
+void VtxGenerator::SetCustomInput(const char* input_file_name, const char* xinput_hist_name,const char* yinput_hist_name,const char* zinput_hist_name){
   this->input_file_name = input_file_name;
   this->input_hist_name=input_hist_name;   
   this->input_file = new TFile(input_file_name);

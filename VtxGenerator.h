@@ -1,19 +1,19 @@
 #ifndef VTXGENERATOR_H
 #define VTXGENERATOR_H
 #if !defined(__CINT__) || defined(__MAKECINT__)
-#include "Point.h"
-#include "TFile.h"
-#include "TH1D.h"
-#include "TRandom3.h"
+#include <Point.h>
+#include <TFile.h>
+#include <TH1D.h>
+#include <TRandom3.h>
 #endif
 
 class VtxGenerator{
 public:
   VtxGenerator(){}
-  VtxGenerator(const char* xinput_file_name, const char* xinput_hist_name,const char* yinput_file_name, const char* yinput_hist_name,const char* zinput_file_name, const char* zinput_hist_name);
+  VtxGenerator(const char* input_file_name, const char* xinput_hist_name,const char* yinput_hist_name,const char* zinput_hist_name);
   ~VtxGenerator();
   
-  void SetCustomInput(const char* xinput_file_name, const char* xinput_hist_name,const char* yinput_file_name, const char* yinput_hist_name,const char* zinput_file_name, const char* zinput_hist_name);
+  void SetCustomInput(const char* input_file_name, const char* xinput_hist_name,const char* yinput_hist_name,const char* zinput_hist_name);
   const char* GetInputFileName(){return input_file_name;}
   const char* GetXInputHistName(){return xinput_hist_name;}
   const char* GetYInputHistName(){return yinput_hist_name;}

@@ -1,10 +1,10 @@
 #ifndef TRACK_H
 #define TRACK_H
 #if !defined(__CINT__) || defined(__MAKECINT__)
-#include <TNamed.h>
+#include "TObject.h"
 #endif
 
-class Track{
+class Track:public TObject{
 public:
   Track(){}
   Track(Double_t theta, Double_t phi);
