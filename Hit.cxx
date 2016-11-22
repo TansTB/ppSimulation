@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Hit.h"
+#include "TMath.h"
 using namespace std;
+using namespace TMath;
 
 Hit::Hit(Double_t label, Double_t phi, Double_t z, Int_t layer){
   this->label = label;
