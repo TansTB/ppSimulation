@@ -1,3 +1,4 @@
+#include <iostream>
 #include "MultiplicityGenerator.h"
 
 MultiplicityGenerator::MultiplicityGenerator(const char *input_file_name, const char* input_hist_name){

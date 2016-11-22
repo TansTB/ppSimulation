@@ -1,0 +1,24 @@
+//:ppSimulation Configuration File
+//:Event Configuration
+Vertex Distribution: gaussian ://:constant,gaussian,uniform,custom
+Vertex x,y,z: xvalue:yvalue:zvalue ://:if constant
+Vertex meanx,sigmax,meany,sigmay,meanz,sigmaz: meanx:sigmax:meany:sigmay:meanz:sigmaz ://:if gaussian
+Vertex xmin,xmax,ymin,ymax,zmin,zmax : xmin:xmax:ymin:ymax:zmin:zmax ://:if uniform
+Vertex Input File: input_file_name ://if custom
+Vertex x histogram name: x_hist_name ://if custom
+Vertex y histogram name: y_hist_name ://if custom
+Vertex z histogram name: z_hist_name ://if custom
+Multiplicity Distribution: gaussian ://:constant,gaussian,uniform,custom
+Multiplicity Value: value ://:if constant
+Multiplicity mean,sigma: mean_value:sigma_value ://:if gaussian
+Multiplicity min,max: minvalue:maxvalue ://:if uniform
+Multiplicity Input File: input_file_name ://if custom
+Multiplicity Histogram name: hist_name ://if custom
+Tracks Distribution: uniform ://:uniform,custom
+Tracks thetamin,thetamax: thetaminvalue:thetamaxvalue ://:if uniform
+Tracks Input File: input_file_name ://if custom
+Tracks eta histogram name: hist_name ://if custom
+Multiple Scattering: off ://on,off
+
+//:Simulation Configuration
+Number of events: 100 
