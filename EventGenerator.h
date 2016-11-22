@@ -17,7 +17,7 @@
 class EventGenerator{
 public:
   EventGenerator();
-  EventGenerator(vector<strings> configs,TTree *tree);
+  EventGenerator(vector<string> configs,TTree *tree);//Sets up the event generator
   
   void NewEvent();
   void TurnOffScattering(Bool_t scattering_flag);

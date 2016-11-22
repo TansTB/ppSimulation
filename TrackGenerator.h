@@ -15,9 +15,10 @@ class TrackGenerator{
 
     const char* GetInputFileName(){return input_file_name;}
     const char* GetEtaInputHistName(){return eta_input_hist_name;}
-    Track* GetUniformTrack();
+    Track* GetUniformTrack();//Returns a track between thetamin and thetamax, 0<thetamin<thetamax<Pi
+    void SetUniformTrack(Double_t thetamin,Double_t thetamax);
     Track* GetCustomTrack();
-    void SetCustomInput(const char* input_file_name, const char* eta_input_hist_name);
+    void SetCustomTrack(const char* input_file_name, const char* eta_input_hist_name);
   private:
     TrackGenerator(TrackGenerator &other);
     TrackGenerator& operator=(const TrackGenerator& other);
@@ -27,8 +28,6 @@ class TrackGenerator{
     TFile *input_file;
     TH1D *eta_input_hist;
     Bool_t used_hist=0;
-
-
-   
+    Double_t thetamin,thetamax;   
 };
 #endif

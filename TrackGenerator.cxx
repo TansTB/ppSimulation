@@ -22,8 +22,13 @@ TrackGenerator::~TrackGenerator(){
 
 
 Track* TrackGenerator::GetUniformTrack(){
-  Track *o_track = new Track(gRandom->Uniform(0,Pi()),gRandom->Uniform(0,2*Pi()));
+  Track *o_track = new Track(gRandom->Uniform(thetamin,thetamax),gRandom->Uniform(0,2*Pi()));
   return o_track;
+}
+
+void TrackGenerator::SetUniformTrack(Double_t thetamin,Double_t thetamax){
+  this->thetamin = thetamin;
+  this->thetamax = thetamax;
 }
 
 Track* TrackGenerator::GetCustomTrack(){
@@ -32,7 +37,7 @@ Track* TrackGenerator::GetCustomTrack(){
   return o_track;
 }
 
-void TrackGenerator::SetCustomInput(const char *input_file_name, const char* eta_input_hist_name){  
+void TrackGenerator::SetCustomTrack(const char *input_file_name, const char* eta_input_hist_name){  
    this->input_file_name = input_file_name;
   this->eta_input_hist_name=eta_input_hist_name;
   this->input_file = new TFile(input_file_name);
