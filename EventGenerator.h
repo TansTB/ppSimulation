@@ -9,6 +9,9 @@
 #include "MultiplicityGenerator.h"
 #include "VtxGenerator.h"
 #include "TrackGenerator.h"
+#include <vector>
+#include <string>
+#include <algorithm>
 #endif
 
 class EventGenerator{
@@ -25,12 +28,17 @@ private:
   
   Track* MultipleScattering();
   Point* Intersection(Track* track,Double_t radius);
+  void RemoveWhitespaces(string& s);
   
   Bool_t is_scattering();
   VtxGenerator vtx_gen;
+  Int_t vtx_gen_mode;//vtx generator mode 0->constant 1->gaussian 2->uniform 3->custom
   MultiplicityGenerator mult_gen;
+  Int_t mult_gen_mode;//mult generator mode 0->constant 1->gaussian 2->uniform 3->custom
   TrackGenerator track_gen;
+  Int_t track_gen_mode;//track generator mode 0->uniform 1->custom
   Point VTX;
+  TTree *tree;
   TClonesArray *ptr_BP_tracks;
   TClonesArray &BP_tracks = *ptr_BP_tracks;
   TClonesArray *ptr_BP_hits;

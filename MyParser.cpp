@@ -45,7 +45,7 @@ void ColonParser(ifstream& file_to_parse,vector<vector<string> >& spreadsheet){
     if (!linestream.eof()){
       spreadsheet.push_back(vector<string>());
       getline(linestream,field_content,':');
-      if (field_content!="//") {
+      if (field_content=="//"){
 	spreadsheet.pop_back();
 	continue;
       }
@@ -53,6 +53,7 @@ void ColonParser(ifstream& file_to_parse,vector<vector<string> >& spreadsheet){
 	spreadsheet.back().push_back(field_content);
 	if (linestream.eof())break;
 	getline(linestream,field_content,':');
+	if (field_content=="//")break;
       }
     }
   }

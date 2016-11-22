@@ -18,9 +18,12 @@ public:
   const char* GetXInputHistName(){return xinput_hist_name;}
   const char* GetYInputHistName(){return yinput_hist_name;}
   const char* GetZInputHistName(){return zinput_hist_name;}
-  Point* GetConstVtx(Double_t x, Double_t y, Double_t z);
-  Point* GetGausVtx(Double_t x, Double_t sx, Double_t y, Double_t sy, Double_t z, Double_t sz);
-  Point* GetUniformVtx(Double_t xmin, Double_t xmax, Double_t ymin, Double_t ymax, Double_t zmin, Double_t zmax);
+  Point* GetConstVtx();
+  void SetConstVtx(Double_t x, Double_t y, Double_t z);  
+  Point* GetGausVtx();
+  void SetGausVtx(Double_t x, Double_t sx, Double_t y, Double_t sy, Double_t z, Double_t sz);
+  Point* GetUniformVtx();
+  void SetUniformVtx(Double_t xmin, Double_t xmax, Double_t ymin, Double_t ymax, Double_t zmin, Double_t zmax);
   Point* GetCustomVtx();
   
 private:
@@ -38,5 +41,6 @@ private:
   TH1D *yinput_hist;
   TH1D *zinput_hist;
   Bool_t used_hist=0;
+  Double_t x,y,z,sx,sy,sz,xmin,xmax,ymin,ymax,zmin,zmax;
 };
 #endif
