@@ -48,10 +48,59 @@ EventGenerator::EventGenerator(vector<vector<strings> > configs,TTree *tree){
   if(RemoveWhitespaces(configs.at(20).at(1)=="off")this->is_scattering = kFALSE;
   else is_scattering = kTRUE;
 
-//tree configuration
+//Detector Configuration
+  this->BP_radius = stod(configs.at(22).at(1));
+  this->BP_thickness = stod(configs.at(23).at(1));
+  this->L1_radius = stod(configs.at(24).at(1));
+  this->L1_thickness = stod(configs.at(25).at(1));
+  this->zmin_detector = stod(configs.at(26).at(1));
+  this->zmax_detector = stod(configs.at(27).at(1));
+  
+//Tree Configuration
   tree->Branch("Vertex",&VTX);
+  tree->Branch("Multiplicity",&multiplicity);
   tree->Branch("L1_Hits",&ptr_L1_hits);
   tree->Branch("L2_Hits",&ptr_L2_hits);
+}
+
+void NewEvent(){
+  switch(vtx_gen_mode){
+    case 0 : VTX = vtx_gen.GetConstVtx();
+     break;
+    case 1 : VTX = vtx_gen.GetGausVtx();
+     break;
+    case 2 : VTX = vtx_gen.GetUniformVtx();
+     break;
+    case 3 : VTX = vtx_gen.GetCustomVtx();
+  }
+  
+  switch(mult_gen_mode){
+    case 0 : multiplicity = mult_gen.GetConstMultiplicity();
+     break;
+    case 1 : multiplicity = mult_gen.GetGausMultiplicity();
+     break;
+    case 2 : multiplicity = mult_gen.GetUniformMultiplicity();
+     break;
+    case 3 : multiplicity = mult_gen.GetCustomMultiplicity();
+     break;
+  }
+  
+  switch(track_gen_mode){
+    case 0 : {
+      for (Int_t i=0;i<multiplicity;i++){
+	ptr_tracks->AddAtAndExpand(track_gen->GetUniformTrack(),i);
+      }
+    }
+    break;
+    case 1 : {
+      for (Int_t i=0;i<multiplicity;i++){
+	ptr_tracks->AddAtAndExpand(track_gen->GetCustomTrack(),i);
+      }
+    }
+    break;
+  }
+  
+  
 }
 
 void EventGenerator::RemoveWhitespaces(string& s){
