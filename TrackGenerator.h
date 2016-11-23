@@ -9,7 +9,7 @@
 
 class TrackGenerator{
   public:
-    TrackGenerator(){}
+    TrackGenerator(){this->track = new Track();}
     TrackGenerator(const char* input_file_name, const char* eta_input_hist_name);
     ~TrackGenerator();
 
@@ -23,11 +23,12 @@ class TrackGenerator{
     TrackGenerator(TrackGenerator &other);
     TrackGenerator& operator=(const TrackGenerator& other);
 
-    const char* input_file_name;
-    const char* eta_input_hist_name;
+    Track *track;
+    const char *input_file_name;
+    const char *eta_input_hist_name;
     TFile *input_file;
     TH1D *eta_input_hist;
     Bool_t used_hist=0;
-    Double_t thetamin,thetamax;   
+    Double_t thetamin,thetamax;  
 };
 #endif

@@ -12,18 +12,20 @@ TrackGenerator::TrackGenerator(const char *input_file_name, const char* eta_inpu
   this->input_file->Close();
   delete input_file;
   this->used_hist = kTRUE;
+  this->track = new Track();
 }
 
 TrackGenerator::~TrackGenerator(){
   if(used_hist){
     delete eta_input_hist;
   }
+  delete track;
 }
 
-
 Track* TrackGenerator::GetUniformTrack(){
-  Track *o_track = new Track(gRandom->Uniform(thetamin,thetamax),gRandom->Uniform(0,2*Pi()));
-  return o_track;
+  track->SetTheta(gRandom->Uniform(thetamin,thetamax));
+  track->SetPhi(gRandom->Uniform(0,2*Pi()));
+  return track;
 }
 
 void TrackGenerator::SetUniformTrack(Double_t thetamin,Double_t thetamax){
@@ -33,8 +35,9 @@ void TrackGenerator::SetUniformTrack(Double_t thetamin,Double_t thetamax){
 
 Track* TrackGenerator::GetCustomTrack(){
   Double_t th = 2*atan(exp(-eta_input_hist->GetRandom()));
-  Track *o_track = new Track(th,gRandom->Uniform(0,2*Pi()));
-  return o_track;
+  track->SetTheta(th);
+  track->SetPhi(gRandom->Uniform(0,2*Pi()));
+  return track;
 }
 
 void TrackGenerator::SetCustomTrack(const char *input_file_name, const char* eta_input_hist_name){  
@@ -47,4 +50,3 @@ void TrackGenerator::SetCustomTrack(const char *input_file_name, const char* eta
   delete input_file;
   this->used_hist = kTRUE;
 }
-

@@ -9,7 +9,7 @@
 
 class VtxGenerator{
 public:
-  VtxGenerator(){}
+  VtxGenerator(){this->vtx = new Point();}
   VtxGenerator(const char* xinput_file_name,const char* yinput_file_name,const char* zinput_file_name, const char* xinput_hist_name,const char* yinput_hist_name,const char* zinput_hist_name);
   ~VtxGenerator();
   
@@ -32,6 +32,7 @@ private:
   VtxGenerator(const VtxGenerator &other);
   VtxGenerator& operator=(const VtxGenerator& other);
   
+  Point *vtx;
   const char *xinput_file_name;
   const char *xinput_hist_name;
   const char *yinput_file_name;

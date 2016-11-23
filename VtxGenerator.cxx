@@ -23,6 +23,7 @@ VtxGenerator::VtxGenerator(const char* xinput_file_name,const char* yinput_file_
   delete yinput_file;
   delete zinput_file;
   this->used_hist = kTRUE;
+  this->vtx = new Point();
 }
 
 VtxGenerator::~VtxGenerator(){
@@ -31,12 +32,14 @@ VtxGenerator::~VtxGenerator(){
     delete yinput_hist;
     delete zinput_hist;
   }
+  delete vtx;
 }
 
-
 Point* VtxGenerator::GetConstVtx(){
-  Point *o_point = new Point(x,y,z);
-  return o_point;  
+  vtx->SetX(x);
+  vtx->SetY(y);
+  vtx->SetZ(z);
+  return vtx;  
 }
 
 void VtxGenerator::SetConstVtx(Double_t x, Double_t y, Double_t z){
@@ -46,8 +49,10 @@ void VtxGenerator::SetConstVtx(Double_t x, Double_t y, Double_t z){
 } 
 
 Point* VtxGenerator::GetGausVtx(){
-  Point *o_point = new Point(gRandom->Gaus(x,sx),gRandom->Gaus(y,sy),gRandom->Gaus(z,sz));
-  return o_point;
+  vtx->SetX(gRandom->Gaus(x,sx));
+  vtx->SetY(gRandom->Gaus(y,sy));
+  vtx->SetZ(gRandom->Gaus(z,sz));
+  return vtx;
 }
 
 void VtxGenerator::SetGausVtx(Double_t x, Double_t sx, Double_t y, Double_t sy, Double_t z, Double_t sz){
@@ -60,8 +65,10 @@ void VtxGenerator::SetGausVtx(Double_t x, Double_t sx, Double_t y, Double_t sy, 
 }
 
 Point* VtxGenerator::GetUniformVtx(){
-  Point *o_point = new Point(gRandom->Uniform(x,xmax),gRandom->Uniform(y,ymax),gRandom->Uniform(z,zmax));
-  return o_point;
+  vtx->SetX(gRandom->Uniform(x,xmax));
+  vtx->SetY(gRandom->Uniform(y,ymax));
+  vtx->SetZ(gRandom->Uniform(z,zmax));
+  return vtx;
 }
 
 void VtxGenerator::SetUniformVtx(Double_t xmin, Double_t xmax, Double_t ymin, Double_t ymax, Double_t zmin, Double_t zmax){
@@ -74,8 +81,10 @@ void VtxGenerator::SetUniformVtx(Double_t xmin, Double_t xmax, Double_t ymin, Do
 }
 
 Point* VtxGenerator::GetCustomVtx(){
-  Point *o_point = new Point(xinput_hist->GetRandom(),yinput_hist->GetRandom(),zinput_hist->GetRandom());
-  return o_point;
+  vtx->SetX(xinput_hist->GetRandom());
+  vtx->SetY(yinput_hist->GetRandom());
+  vtx->SetZ(zinput_hist->GetRandom());
+  return vtx;
 }
 
 void VtxGenerator::SetCustomVtx(const char* xinput_file_name,const char* yinput_file_name,const char* zinput_file_name, const char* xinput_hist_name,const char* yinput_hist_name,const char* zinput_hist_name){
