@@ -90,15 +90,13 @@ void NewEvent(){
   switch(track_gen_mode){
     case 0 : {
       for (Int_t i=0;i<multiplicity;i++){
-	Track* random_track = track_gen->GetUniformTrack()
-	new(tracks[i]) Track(random_track);
-	delete random_track;
+	new(tracks[i]) Track(*(track_gen->GetUniformTrack()));
       }
     }
     break;
     case 1 : {
       for (Int_t i=0;i<multiplicity;i++){
-	ptr_tracks->AddAtAndExpand(track_gen->GetCustomTrack(),i);
+	new(tracks[i]) Track(*(track_gen->GetCustomTrack()));
       }
     }
     break;
@@ -107,11 +105,20 @@ void NewEvent(){
   for (Int_t label=0;label<multiplicity;label++){
     Hit* intersection;
     Int_t c1=0,c2=0,c3=0;
-    if(Intersection(VTX,tracks.at(label),BP_radius,intersection)){
-      intersection->SetLabel(0);
-      new(BP_hits[c1]) Hit(intersection);
-      if(is_scattering)tracks.at(label) = BeMultipleScattering(tracks.at(label),BP_thickness);
-      if(Intersection(BP_hits.Last(),1))
+    if(Intersection(VTX,tracks.At(label),BP_radius,intersection)){
+      intersection->SetLabel(label);
+      new(BP_hits[c1]) Hit(*intersection);
+      if(is_scattering)tracks.At(label) = BeMultipleScattering(tracks.At(label),BP_thickness);
+      if(Intersection(BP_hits.At(c1),1,tracks.At(label),L1_radius,intersection)){
+	new(L1_hits[c2]) Hit(*intersection);
+	if(is_scattering)tracks.At(label) = BeMultipleScattering(tracks.At(label),L1_thickness);
+	if(Intersection(L1_Hits.At(c2),2,tracks.At(label),L2_radius,intersection){
+	  new(L2_hits[c2]) Hit(*intersection);
+	  c3++;
+	}
+	c2++;
+      }
+      c1++;
     }
   }
 }
