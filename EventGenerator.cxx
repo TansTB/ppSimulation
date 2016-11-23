@@ -1,6 +1,7 @@
 #include "EventGenerator"
 
 using namespace std;
+using namespace TMath;
 
 EventGenerator::EventGenerator(vector<vector<strings> > configs,TTree *tree){
   //Generator Configuration
@@ -64,6 +65,7 @@ EventGenerator::EventGenerator(vector<vector<strings> > configs,TTree *tree){
 }
 
 void NewEvent(){
+  //Generate Vertex
   switch(vtx_gen_mode){
     case 0 : VTX = vtx_gen.GetConstVtx();
      break;
@@ -73,7 +75,7 @@ void NewEvent(){
      break;
     case 3 : VTX = vtx_gen.GetCustomVtx();
   }
-  
+  //Generate Multiplicity
   switch(mult_gen_mode){
     case 0 : multiplicity = mult_gen.GetConstMultiplicity();
      break;
@@ -84,11 +86,13 @@ void NewEvent(){
     case 3 : multiplicity = mult_gen.GetCustomMultiplicity();
      break;
   }
-  
+  //Generate Tracks
   switch(track_gen_mode){
     case 0 : {
       for (Int_t i=0;i<multiplicity;i++){
-	ptr_tracks->AddAtAndExpand(track_gen->GetUniformTrack(),i);
+	Track* random_track = track_gen->GetUniformTrack()
+	new(tracks[i]) Track(random_track);
+	delete random_track;
       }
     }
     break;
@@ -98,9 +102,38 @@ void NewEvent(){
       }
     }
     break;
+  } 
+  //Calculating Hits
+  for (Int_t label=0;label<multiplicity;label++){
+    Hit* intersection;
+    Int_t c1=0,c2=0,c3=0;
+    if(Intersection(VTX,tracks.at(label),BP_radius,intersection)){
+      intersection->SetLabel(0);
+      new(BP_hits[c1]) Hit(intersection);
+      if(is_scattering)tracks.at(label) = BeMultipleScattering(tracks.at(label),BP_thickness);
+      if(Intersection(BP_hits.Last(),1))
+    }
   }
-  
-  
+}
+
+Bool_t EventGenerator::Intersection(Point* vertex,Track* track,Double_t radius,Hit* intersection){
+  Double_t t,delta,x,y,z;
+  delta = Power((vertex->GetX())*Sin(track->GetTheta())*Cos(track->GetPhi())+(vertex->GetY())*Sin(track->GetTheta())*Sin(track->GetPhi()),2)-(Power(Sin(track->GetTheta())*Cos(track->GetPhi()),2)+Power(Sin(track->GetTheta())*Sin(track->GetPhi()),2))*(Power(vertex->GetX(),2)+Power(vertex->GetY(),2)-Power(radius,2));
+  t = (-((vertex->GetX())*Sin(track->GetTheta())*Cos(track->GetPhi())+(vertex->GetY())*Sin(track->GetTheta())*Sin(track->GetPhi()))+Sqrt(delta))/(Power(Sin(track->GetTheta())*Cos(track->GetPhi()),2)+Power(Sin(track->GetTheta())*Sin(track->GetPhi()),2));
+  x = (vertex->GetX())+t*Sin(track->GetTheta())*Cos(track->GetPhi());
+  y = (vertex->GetY())+t*Sin(track->GetTheta())*Sin(track->GetPhi());
+  z = (vertex->GetZ())+t*Cos(track->GetTheta());
+  intersection->SetPhi(Atan(y/x));
+  intersection->SetZ(z);
+  if((zmin_detector<z)&&(z<zmax_detector))return kTRUE;
+  else return kFALSE;
+}
+
+Bool_t EventGenerator::Intersection(Hit* layer_hit,Int_t layer_hit_number,Track* track,Double_t radius,Hit* intersection){
+  Double_t vertex_radius = (layer_hit_number==1) ? L1_radius : L2_radius;
+  Point vtx = Point(vertex_radius*(Cos(layer_hit->GetPhi())),vertex_radius*(Sin(layer_hit->GetPhi())),(layer_hit->GetZ()));
+  Point* vertex = &vtx;
+  return Intersection(vertex,track,radius,intersection);
 }
 
 void EventGenerator::RemoveWhitespaces(string& s){
