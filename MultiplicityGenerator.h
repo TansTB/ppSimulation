@@ -13,13 +13,16 @@ public:
   MultiplicityGenerator(const char *input_file_name, const char* input_hist_name);
   ~MultiplicityGenerator();
   
-  void SetCustomInput(const char* input_file_name, const char* input_hist_name);
   const char* GetInputFileName(){return input_file_name;}
   const char* GetInputHistName(){return input_hist_name;}
-  Int_t GetConstMultiplicity(Int_t multiplicity);
-  Int_t GetGausMultiplicity(Double_t mean, Double_t sigma);
-  Int_t GetUniformMultiplicity(Int_t min, Int_t max);
+  Int_t GetConstMultiplicity();//Returns a constant value. If multiplicity is <0, 0 is returned
+  void SetConstMultiplicity(Int_t multiplicity);
+  Int_t GetGausMultiplicity();//Returns a gaussian distributed integer value. If the random number is <0, 0 is returned
+  void SetGausMultiplicity(Double_t mean, Double_t sigma);
+  Int_t GetUniformMultiplicity();//Returns a uniform distributed integer value between min and max. Min must be >0 and <max
+  void SetUniformMultiplicity(Int_t min, Int_t max);
   Int_t GetCustomMultiplicity();
+  void SetCustomInput(const char* input_file_name, const char* input_hist_name);
   
 private:
   MultiplicityGenerator(const MultiplicityGenerator &other);
@@ -30,5 +33,6 @@ private:
   TFile *input_file;
   TH1D *input_hist;
   Bool_t used_hist=0;
+  Double_t multiplicity,max,sigma;
 };
 #endif
