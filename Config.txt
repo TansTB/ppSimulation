@@ -41,5 +41,5 @@ Detectors Extension: 27://Supposed to be symmetric(cm)
 Momentum: p ://(MeV/c)
 
 //:Noise Configuration
-Noise Hits: 10
+Noise Hits: entries
 Hit Distribution: uniform ://:uniform,custom
