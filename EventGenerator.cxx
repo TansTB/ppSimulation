@@ -52,10 +52,17 @@ EventGenerator::EventGenerator(vector<vector<strings> > configs,TTree *tree){
 //Detector Configuration
   this->BP_radius = stod(configs.at(22).at(1));
   this->BP_thickness = stod(configs.at(23).at(1));
-  this->L1_radius = stod(configs.at(24).at(1));
-  this->L1_thickness = stod(configs.at(25).at(1));
-  this->zmin_detector = stod(configs.at(26).at(1));
-  this->zmax_detector = stod(configs.at(27).at(1));
+  this->BP_X0 = stod(configs.at(24).at(1));
+  this->BP_Z = stod(configs.at(25).at(1));
+  this->L1_radius = stod(configs.at(26).at(1));
+  this->L1_thickness = stod(configs.at(27).at(1));
+  this->L1_X0 = stod(configs.at(28).at(1));
+  this->L1_Z = stod(configs.at(29).at(1));
+  this->zmin_detector = stod(configs.at(30).at(1));
+  this->zmax_detector = stod(configs.at(31).at(1));
+  this->p = stod(configs.at(32).at(1));
+  this->BP_theta0 = Sqrt((2.*BP_thickness)/BP_X0)*13.6*BP_Z*(1+0.038*Log(BP_thickness/BP_X0))/p;
+  this->L1_theta0 = Sqrt((2.*L1_thickness)/L1_X0)*13.6*L1_Z*(1+0.038*Log(L1_thickness/L1_X0))/p;
   
 //Tree Configuration
   tree->Branch("Vertex",&VTX);
@@ -108,10 +115,10 @@ void NewEvent(){
     if(Intersection(VTX,tracks.At(label),BP_radius,intersection)){
       intersection->SetLabel(label);
       new(BP_hits[c1]) Hit(*intersection);
-      if(is_scattering)tracks.At(label) = BeMultipleScattering(tracks.At(label),BP_thickness);
+      if(is_scattering)tracks.At(label) = MultipleScattering(tracks.At(label),BP_theta0);
       if(Intersection(BP_hits.At(c1),1,tracks.At(label),L1_radius,intersection)){
 	new(L1_hits[c2]) Hit(*intersection);
-	if(is_scattering)tracks.At(label) = BeMultipleScattering(tracks.At(label),L1_thickness);
+	if(is_scattering)tracks.At(label) = MultipleScattering(tracks.At(label),L1_theta0);
 	if(Intersection(L1_Hits.At(c2),2,tracks.At(label),L2_radius,intersection){
 	  new(L2_hits[c2]) Hit(*intersection);
 	  c3++;
@@ -137,10 +144,14 @@ Bool_t EventGenerator::Intersection(Point* vertex,Track* track,Double_t radius,H
 }
 
 Bool_t EventGenerator::Intersection(Hit* layer_hit,Int_t layer_hit_number,Track* track,Double_t radius,Hit* intersection){
-  Double_t vertex_radius = (layer_hit_number==1) ? L1_radius : L2_radius;
+  Double_t vertex_radius = (layer_hit_number==0) ? BP_radius : L1_radius;
   Point vtx = Point(vertex_radius*(Cos(layer_hit->GetPhi())),vertex_radius*(Sin(layer_hit->GetPhi())),(layer_hit->GetZ()));
   Point* vertex = &vtx;
   return Intersection(vertex,track,radius,intersection);
+}
+
+Track* EventGenerator::MultipleScattering(Track* track,Double_t theta0rms){
+  track->Rotate(gRandom->Gaus(0,theta0rms),Uniform(0,2*Pi()));
 }
 
 void EventGenerator::RemoveWhitespaces(string& s){

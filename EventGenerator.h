@@ -27,7 +27,7 @@ private:
   EventGenerator(const EventGenerator &other);
   EventGenerator& operator= (const EventGenerator &other);
   
-  Track* BeMultipleScattering(Track* track,Double_t thickness);
+  Track* MultipleScattering(Track* track,Double_t theta0rms);
   Bool_t Intersection(Point* vertex,Track* track,Double_t radius,Hit* intersection);
   Bool_t Intersection(Hit layer_hit,Int_t layer_number,Track* track,Double_t radius,Hit* intersection);
   void RemoveWhitespaces(string& s);
@@ -50,5 +50,5 @@ private:
   TClonesArray &L1_hits = *ptr_L1_hits;
   TClonesArray *ptr_L2_hits = new TClonesArray("Hit",MAX_SIZE);  
   TClonesArray &L2_hits = *ptr_L2_hits;
-  Double_t BP_radius,BP_thickness,L1_radius,L1_thickness,L2_radius,zmax_detector,zmin_detector;
+  Double_t BP_radius,BP_thickness,BP_X0,BP_Z,BP_theta0,L1_radius,L1_thickness,L1_X0,L1_Z,L1_theta0,L2_radius,zmax_detector,zmin_detector,p;
 }

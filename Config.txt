@@ -26,9 +26,16 @@ Multiple Scattering: off ://on,off
 Number of events to simulate: 100 
 
 //:Detector Geometry
-Beam Pipe Radius: 3 ://Berillium (cm)
+Beam Pipe Radius: 3 ://(cm)
 Beam Pipe Thickness: 0.08 ://(cm)
+Beam Pipe Material X0: 35.28://(cm)
+Beam Pipe Material Z: 4
 Layer 1 Detector Radius: 4://(cm)
 Layer 1 Detector Thickness: 0.02://(cm)
+Layer 1 Detector Material X0: 9.37://(cm)
+Layer 1 Material Z: 14
 Layer 2 Detector Radius: 7://(cm)
 Detectors Extension: 27://Supposed to be symmetric(cm)
+
+//:Particle Information
+Momentum: p ://(MeV/c)
