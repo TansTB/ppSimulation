@@ -39,3 +39,7 @@ Detectors Extension: 27://Supposed to be symmetric(cm)
 
 //:Particle Information
 Momentum: p ://(MeV/c)
+
+//:Noise Configuration
+Noise Hits: 10
+Hit Distribution: uniform ://:uniform,custom
