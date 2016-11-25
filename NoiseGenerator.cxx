@@ -1,6 +1,4 @@
 #include "NoiseGenerator.h"
-#include "TMath.h"
-#include "Hit.cxx" //I need to include this to avoid compiler error
 
 using namespace std;
 using namespace TMath;
@@ -81,8 +79,9 @@ Hit* NoiseGenerator::GetCustomHits(){
   return hit;
 }
 
-void EventGenerator::RemoveWhitespaces(string& s){
-  s.erase(std::remove_if(s.begin(),s.end(),std::isspace),s.end());
+string NoiseGenerator::RemoveWhitespaces(string& s){
+  s.erase(std::remove_if(s.begin(),s.end(),[](char c){return std::isspace(static_cast<unsigned char>(c));}),s.end());
+  return s;
 }
 
 

@@ -166,6 +166,6 @@ Track* EventGenerator::MultipleScattering(Track* track,Double_t theta0rms){
 }
 
 string EventGenerator::RemoveWhitespaces(string& s){
-  s.erase(std::remove_if(s.begin(),s.end(),std::isspace),s.end());
+  s.erase(std::remove_if(s.begin(),s.end(),[](char c){return std::isspace(static_cast<unsigned char>(c));}),s.end());
   return s;
 }

@@ -12,6 +12,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <cctype>
 #endif
 
 const Int_t MAX_SIZE = 400;
@@ -31,7 +32,7 @@ private:
   Bool_t Intersection(Point* vertex,Track* track,Double_t radius,Hit* intersection);
   Bool_t Intersection(Hit layer_hit,Int_t layer_number,Track* track,Double_t radius,Hit* intersection);
   string RemoveWhitespaces(string& s);
-  
+ 
   Bool_t is_scattering;
   VtxGenerator vtx_gen;
   Int_t vtx_gen_mode;//vtx generator mode 0->constant 1->gaussian 2->uniform 3->custom

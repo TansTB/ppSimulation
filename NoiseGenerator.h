@@ -7,11 +7,13 @@
 #include "TTree.h"
 #include "Hit.h"
 #include "TH1D.h"
+#include "TMath.h"
 #include "MyParser.h"
 #include <vector>
 #include <string>
 #include <algorithm>
 #include <iostream>
+#include <cctype>
 #endif
 
 const Int_t MAX_SIZE = 400; 
@@ -27,12 +29,13 @@ public:
   Int_t GetEntries(){return entries;}
   Double_t GetDetectorExtension(){return detector_extension;}
   void NewNoise();        //generation of all Hits and tree update 
-  string* RemoveWhitespaces(string& s); //parser related function
 
   private:
   NoiseGenerator(NoiseGenerator &other);
   NoiseGenerator& operator=(const NoiseGenerator& other);
 
+  string RemoveWhitespaces(string& s); //parser related function
+  
   //General Parameters
   Int_t entries;
   Int_t noise_gen_mode;
