@@ -13,8 +13,13 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <stdlib.h>
 
-void LineParser(ifstream&, vector<string>&);//Function to turn a multiple lines file into a vector of strings 
-void CSVParser(ifstream& file_to_parse, vector<vector<string> >&);//Function to turn a vector of lines coming from a .csv in a vector
+using namespace std;
+
+void LineParser(ifstream& file_to_parse, vector<string>& lines);//Function to turn a multiple lines file into a vector of strings 
+void CSVParser(ifstream& file_to_parse, vector<vector<string> >& spreadsheet);//Function to turn a .csv file in a vector
+								  //of vectors containing the fields. spreadsheet should be empty
+void ColonParser(ifstream& file_to_parse, vector<vector<string> >& spreadsheet);//Function to turn a colon separated .txt file in a vector
 								  //of vectors containing the fields. spreadsheet should be empty
 #endif

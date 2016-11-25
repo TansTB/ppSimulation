@@ -4,38 +4,38 @@ Vertex Distribution: gaussian ://:constant,gaussian,uniform,custom
 Vertex x,y,z: xvalue:yvalue:zvalue ://:if constant
 Vertex meanx,sigmax,meany,sigmay,meanz,sigmaz: meanx:sigmax:meany:sigmay:meanz:sigmaz ://:if gaussian
 Vertex xmin,xmax,ymin,ymax,zmin,zmax : xmin:xmax:ymin:ymax:zmin:zmax ://:if uniform
-Vertex x Input File: x_input_file_name ://if custom
-Vertex y Input File: y_input_file_name ://if custom
-Vertex z Input File: z_input_file_name ://if custom
-Vertex x histogram name: x_hist_name ://if custom
-Vertex y histogram name: y_hist_name ://if custom
-Vertex z histogram name: z_hist_name ://if custom
+Vertex x Input File: x_input_file_name ://:if custom
+Vertex y Input File: y_input_file_name ://:if custom
+Vertex z Input File: z_input_file_name ://:if custom
+Vertex x histogram name: x_hist_name ://:if custom
+Vertex y histogram name: y_hist_name ://:if custom
+Vertex z histogram name: z_hist_name ://:if custom
 Multiplicity Distribution: gaussian ://:constant,gaussian,uniform,custom
 Multiplicity Value: value ://:if constant
 Multiplicity mean,sigma: mean_value:sigma_value ://:if gaussian
 Multiplicity min,max: minvalue:maxvalue ://:if uniform
-Multiplicity Input File: input_file_name ://if custom
-Multiplicity Histogram name: hist_name ://if custom
+Multiplicity Input File: input_file_name ://:if custom
+Multiplicity Histogram name: hist_name ://:if custom
 Tracks Distribution: uniform ://:uniform,custom
 Tracks thetamin,thetamax: thetaminvalue:thetamaxvalue ://:if uniform
-Tracks Input File: input_file_name ://if custom
-Tracks Eta histogram name: hist_name ://if custom
+Tracks Input File: input_file_name ://:if custom
+Tracks Eta histogram name: hist_name ://:if custom
 
 //:Simulation Configuration
-Multiple Scattering: off ://on,off
+Multiple Scattering: off ://:on,off
 Number of events to simulate: 100 
 
 //:Detector Geometry
-Beam Pipe Radius: 3 ://(cm)
-Beam Pipe Thickness: 0.08 ://(cm)
-Beam Pipe Material X0: 35.28://(cm)
+Beam Pipe Radius: 3 ://:(cm)
+Beam Pipe Thickness: 0.08 ://:(cm)
+Beam Pipe Material X0: 35.28://:(cm)
 Beam Pipe Material Z: 4
-Layer 1 Detector Radius: 4://(cm)
-Layer 1 Detector Thickness: 0.02://(cm)
-Layer 1 Detector Material X0: 9.37://(cm)
+Layer 1 Detector Radius: 4://:(cm)
+Layer 1 Detector Thickness: 0.02://:(cm)
+Layer 1 Detector Material X0: 9.37://:(cm)
 Layer 1 Material Z: 14
-Layer 2 Detector Radius: 7://(cm)
-Detectors Extension: 27://Supposed to be symmetric(cm)
+Layer 2 Detector Radius: 7://:(cm)
+Detectors Extension: 27://:Supposed to be symmetric(cm)
 
 //:Particle Information
-Momentum: p ://(MeV/c)
+Momentum: p ://:(MeV/c)

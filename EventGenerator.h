@@ -20,7 +20,7 @@ class EventGenerator{
 public:
   EventGenerator();
   EventGenerator(vector<string> configs,TTree *tree);//Sets up the event generator
-  
+  ~EventGenerator();
   void NewEvent();
   
 private:
@@ -30,7 +30,7 @@ private:
   Track* MultipleScattering(Track* track,Double_t theta0rms);
   Bool_t Intersection(Point* vertex,Track* track,Double_t radius,Hit* intersection);
   Bool_t Intersection(Hit layer_hit,Int_t layer_number,Track* track,Double_t radius,Hit* intersection);
-  void RemoveWhitespaces(string& s);
+  string RemoveWhitespaces(string& s);
   
   Bool_t is_scattering;
   VtxGenerator vtx_gen;

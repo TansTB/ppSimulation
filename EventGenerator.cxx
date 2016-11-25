@@ -71,6 +71,13 @@ EventGenerator::EventGenerator(vector<vector<strings> > configs,TTree *tree){
   tree->Branch("L2_Hits",&ptr_L2_hits);
 }
 
+EventGenerator::~EventGenerator(){
+  delete ptr_tracks;
+  delete ptr_BP_hits;
+  delete ptr_L1_hits;
+  delete ptr_L2_hits;
+}
+
 void NewEvent(){
   //Generate Vertex
   switch(vtx_gen_mode){
@@ -128,6 +135,10 @@ void NewEvent(){
       c1++;
     }
   }
+  tree->Fill();
+  ptr_BP_hits->Clear();
+  ptr_L1_hits->Clear();
+  ptr_L2_hits->Clear();
 }
 
 Bool_t EventGenerator::Intersection(Point* vertex,Track* track,Double_t radius,Hit* intersection){
@@ -154,6 +165,7 @@ Track* EventGenerator::MultipleScattering(Track* track,Double_t theta0rms){
   track->Rotate(gRandom->Gaus(0,theta0rms),Uniform(0,2*Pi()));
 }
 
-void EventGenerator::RemoveWhitespaces(string& s){
+string EventGenerator::RemoveWhitespaces(string& s){
   s.erase(std::remove_if(s.begin(),s.end(),std::isspace),s.end());
+  return s;
 }
