@@ -11,7 +11,7 @@ Vertex x histogram name: x_hist_name ://:if custom
 Vertex y histogram name: y_hist_name ://:if custom
 Vertex z histogram name: z_hist_name ://:if custom
 Multiplicity Distribution: constant ://:constant,gaussian,uniform,custom
-Multiplicity Value: 5 ://:if constant
+Multiplicity Value: 6 ://:if constant
 Multiplicity mean,sigma: mean_value:sigma_value ://:if gaussian
 Multiplicity min,max: minvalue:maxvalue ://:if uniform
 Multiplicity Input File: input_file_name ://:if custom

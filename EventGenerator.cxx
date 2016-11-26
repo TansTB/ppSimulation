@@ -61,7 +61,6 @@ EventGenerator::EventGenerator(vector<vector<string> > configs,TTree *tree){
   this->L1_Z = stod(configs.at(31).at(1));
   this->L2_radius = stod(configs.at(32).at(1));
   this->zmin_detector = stod(configs.at(33).at(1));
-  cout<<zmin_detector<<endl;
   this->zmax_detector = stod(configs.at(34).at(1));
   this->p = stod(configs.at(35).at(1));
   this->BP_theta0 = Sqrt((2.*BP_thickness)/BP_X0)*13.6*BP_Z*(1+0.038*Log(BP_thickness/BP_X0))/p;
@@ -126,16 +125,13 @@ void EventGenerator::NewEvent(){
     Int_t c1=0,c2=0,c3=0;
     if(Intersection(VTX,(Track*)tracks.At(label),BP_radius,intersection)){
       intersection->SetLabel(label);
-      cout << label<<endl;
       new(BP_hits[c1]) Hit(*intersection);
       if(is_scattering) {tracks[label] = MultipleScattering((Track*)tracks.At(label),BP_theta0);}
       if(Intersection((Hit*)BP_hits.At(c1),1,(Track*)tracks.At(label),L1_radius,intersection)){
 	new(L1_hits[c2]) Hit(*intersection);
-	cout<<intersection->GetZ() << "\t"<<intersection->GetLabel()<<endl;
 	if(is_scattering) tracks[label] = MultipleScattering((Track*)tracks.At(label),L1_theta0);
 	if(Intersection((Hit*)L1_hits.At(c2),2,(Track*)tracks.At(label),L2_radius,intersection)){
 	  new(L2_hits[c2]) Hit(*intersection);
-	  cout<<intersection->GetZ() << "\t"<<intersection->GetLabel()<<endl;
 	  c3++;
 	}
 	c2++;
