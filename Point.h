@@ -22,5 +22,7 @@ private:
   Double_t x;
   Double_t y;
   Double_t z;
+  
+ClassDef(Point,1);
 };
 #endif

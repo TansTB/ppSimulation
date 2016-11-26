@@ -56,5 +56,6 @@ public:
   TClonesArray &NO_L1_hits = *ptr_NO_L1_hits;
   TClonesArray *ptr_NO_L2_hits = new TClonesArray("Hit",MAX_SIZE);
   TClonesArray &NO_L2_hits = *ptr_NO_L2_hits;
+  
 };
 #endif

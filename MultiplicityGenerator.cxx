@@ -1,4 +1,3 @@
-#include <iostream>
 #include "MultiplicityGenerator.h"
 
 MultiplicityGenerator::MultiplicityGenerator(const char *input_file_name, const char* input_hist_name){
@@ -20,7 +19,7 @@ Int_t MultiplicityGenerator::GetConstMultiplicity(){
   return multiplicity;
 }
 
-Int_t MultiplicityGenerator::SetConstMultiplicity(Int_t multiplicity){
+void MultiplicityGenerator::SetConstMultiplicity(Int_t multiplicity){
   if(multiplicity>=0) this->multiplicity = multiplicity;
   else{
     std::cout << "Constant multiplicity < 0, setting multiplicity to 0" << std::endl;
@@ -31,7 +30,7 @@ Int_t MultiplicityGenerator::SetConstMultiplicity(Int_t multiplicity){
 Int_t MultiplicityGenerator::GetGausMultiplicity(){
   Int_t random_multiplicity = TMath::Nint(gRandom->Gaus(multiplicity,sigma));
   if (random_multiplicity>0) return random_multiplicity;
-  else return GetGausMultiplicity(multiplicity,sigma);
+  else return GetGausMultiplicity();
 }
 
 void MultiplicityGenerator::SetGausMultiplicity(Double_t mean, Double_t sigma){
@@ -53,7 +52,7 @@ Int_t MultiplicityGenerator::GetCustomMultiplicity(){
   return input_hist->GetRandom();
 }
 
-void MultiplicityGenerator::SetCustomInput(const char* input_file_name, const char* input_hist_name){
+void MultiplicityGenerator::SetCustomMultiplicity(const char* input_file_name, const char* input_hist_name){
   this->input_file_name = input_file_name;
   this->input_hist_name=input_hist_name;   
   this->input_file = new TFile(input_file_name);

@@ -47,5 +47,6 @@ private:
   TH1D *zinput_hist;
   Bool_t used_hist=0;
   Double_t x,y,z,sx,sy,sz,xmax,ymax,zmax;
+  
 };
 #endif

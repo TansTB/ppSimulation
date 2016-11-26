@@ -5,6 +5,7 @@
 #include "TFile.h"
 #include "TH1D.h"
 #include "TRandom3.h"
+#include "TMath.h"
 #endif
 
 class TrackGenerator{
@@ -30,5 +31,6 @@ class TrackGenerator{
     TH1D *eta_input_hist;
     Bool_t used_hist=0;
     Double_t thetamin,thetamax;  
+
 };
 #endif

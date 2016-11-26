@@ -5,6 +5,7 @@
 #include "TH1D.h"
 #include "TMath.h"
 #include "TRandom3.h"
+#include <iostream>
 #endif
 
 class MultiplicityGenerator{
@@ -22,7 +23,7 @@ public:
   Int_t GetUniformMultiplicity();//Returns a uniform distributed integer value between min and max. Min must be >0 and <max
   void SetUniformMultiplicity(Int_t min, Int_t max);
   Int_t GetCustomMultiplicity();
-  void SetCustomInput(const char* input_file_name, const char* input_hist_name);
+  void SetCustomMultiplicity(const char* input_file_name, const char* input_hist_name);
   
 private:
   MultiplicityGenerator(const MultiplicityGenerator &other);
@@ -34,5 +35,7 @@ private:
   TH1D *input_hist;
   Bool_t used_hist=0;
   Double_t multiplicity,max,sigma;
+  
+  
 };
 #endif

@@ -2,6 +2,8 @@
 #define TRACK_H
 #if !defined(__CINT__) || defined(__MAKECINT__)
 #include "TObject.h"
+#include "TMath.h"
+#include <iostream>
 #endif
 
 class Track:public TObject{
@@ -22,5 +24,7 @@ private:
   Double_t theta;
   Double_t phi;
   Double_t comp[3];
+  
+ClassDef(Track,1);
 };
 #endif

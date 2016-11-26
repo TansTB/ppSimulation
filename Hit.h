@@ -21,5 +21,7 @@ private:
   Int_t label;
   Double_t phi;
   Double_t z;
+  
+ClassDef(Hit,1);
 };
 #endif

@@ -1,5 +1,4 @@
 #include "TrackGenerator.h"
-#include <TMath.h>
 
 using namespace TMath;
 
@@ -24,7 +23,7 @@ TrackGenerator::~TrackGenerator(){
 
 Track* TrackGenerator::GetUniformTrack(){
   track->SetTheta(gRandom->Uniform(thetamin,thetamax));
-  track->SetPhi(gRandom->Uniform(0,2*Pi()));
+  track->SetPhi(gRandom->Uniform(-Pi(),Pi()));
   return track;
 }
 
@@ -36,7 +35,7 @@ void TrackGenerator::SetUniformTrack(Double_t thetamin,Double_t thetamax){
 Track* TrackGenerator::GetCustomTrack(){
   Double_t th = 2*atan(exp(-eta_input_hist->GetRandom()));
   track->SetTheta(th);
-  track->SetPhi(gRandom->Uniform(0,2*Pi()));
+  track->SetPhi(gRandom->Uniform(-Pi(),Pi()));
   return track;
 }
 
