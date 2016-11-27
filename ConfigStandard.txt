@@ -1,0 +1,44 @@
+//:ppSimulation Configuration File
+//:Event Configuration
+Vertex Distribution: gaussian ://:constant,gaussian,uniform,custom
+Vertex x,y,z: 0:0:0://:if constant
+Vertex meanx,sigmax,meany,sigmay,meanz,sigmaz: 0:0.01:0:0.01:0:5.3 ://:if gaussian
+Vertex xmin,xmax,ymin,ymax,zmin,zmax : xmin_value:xmax_value:ymin_value:ymax_value:zmin_value:zmax_value ://:if uniform
+Vertex x Input File: x_input_file_name ://:if custom
+Vertex y Input File: y_input_file_name ://:if custom
+Vertex z Input File: z_input_file_name ://:if custom
+Vertex x histogram name: x_hist_name ://:if custom
+Vertex y histogram name: y_hist_name ://:if custom
+Vertex z histogram name: z_hist_name ://:if custom
+Multiplicity Distribution: custom ://:constant,gaussian,uniform,custom
+Multiplicity Value: 6 ://:if constant
+Multiplicity mean,sigma: mean_value:sigma_value ://:if gaussian
+Multiplicity min,max: minvalue:maxvalue ://:if uniform
+Multiplicity Input File: kinem.root ://:if custom
+Multiplicity Histogram name: hmul ://:if custom
+Tracks Distribution: custom ://:uniform,custom
+Tracks thetamin,thetamax: 1.5 : 1.7 ://:if uniform
+Tracks Input File: kinem.root ://:if custom
+Tracks Eta histogram name: heta ://:if custom
+//:Simulation Configuration
+Multiple Scattering: off ://:on,off
+Number of events to simulate: 1000
+Output File Name: StandardSimulation.root
+Seed: 45
+//:Detector Geometry
+Beam Pipe Radius: 3 ://:(cm)
+Beam Pipe Thickness: 0.08 ://:(cm)
+Beam Pipe Material X0: 35.28://:(cm)
+Beam Pipe Material Z: 4
+Layer 1 Detector Radius: 4://:(cm)
+Layer 1 Detector Thickness: 0.02://:(cm)
+Layer 1 Detector Material X0: 9.37://:(cm)
+Layer 1 Material Z: 14
+Layer 2 Detector Radius: 7://:(cm)
+Detectors Lower Z: -13.5://:Supposed to be symmetric(cm)
+Detectors Upper Z: 13.5://:Supposed to be symmetric(cm)
+//:Particle Information
+Momentum: 1000 ://:(MeV/c)
+//:Noise Configuration
+Noise Hits: entries
+Hit Distribution: uniform ://:uniform,custom

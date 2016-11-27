@@ -47,9 +47,8 @@ EventGenerator::EventGenerator(vector<vector<string> > configs,TTree *tree){
     track_gen_mode=1;
     track_gen.SetCustomTrack(RemoveWhitespaces(configs.at(18).at(1)).c_str(),RemoveWhitespaces(configs.at(19).at(1)).c_str());
   }
-  if(RemoveWhitespaces(configs.at(20).at(1))=="off")this->is_scattering = kFALSE;
-  else is_scattering = kTRUE;
-
+  if(RemoveWhitespaces(configs.at(20).at(1))=="off"){this->is_scattering = kFALSE;}
+  else{is_scattering = kTRUE;}
 //Detector Configuration
   this->BP_radius = stod(configs.at(24).at(1));
   this->BP_thickness = stod(configs.at(25).at(1));
@@ -65,13 +64,14 @@ EventGenerator::EventGenerator(vector<vector<string> > configs,TTree *tree){
   this->p = stod(configs.at(35).at(1));
   this->BP_theta0 = Sqrt((2.*BP_thickness)/BP_X0)*13.6*BP_Z*(1+0.038*Log(BP_thickness/BP_X0))/p;
   this->L1_theta0 = Sqrt((2.*L1_thickness)/L1_X0)*13.6*L1_Z*(1+0.038*Log(L1_thickness/L1_X0))/p;
+//   cout<<"BP Theta0: "<<BP_theta0<<endl<<"L1_theta0: "<<L1_theta0<<endl;
   
 //Tree Configuration
   tree->Branch("Vertex",&VTX);
   cout<<"Creating Tree Branches..."<<endl;
   tree->Branch("Multiplicity",&multiplicity);
   tree->Branch("L1_Hits",&ptr_L1_hits);
-  tree->Branch("L2_Hits",&ptr_L2_hits);
+  tree->Branch("L2_Hits","TClonesArray",&ptr_L2_hits);
 }
 
 EventGenerator::~EventGenerator(){
@@ -121,17 +121,19 @@ void EventGenerator::NewEvent(){
     break;
   } 
   //Calculating Hits
-  for (Int_t label=0;label<multiplicity;label++){
     Int_t c1=0,c2=0,c3=0;
+  for (Int_t label=0;label<multiplicity;label++){
     if(Intersection(VTX,(Track*)tracks.At(label),BP_radius,intersection)){
       intersection->SetLabel(label);
       new(BP_hits[c1]) Hit(*intersection);
-      if(is_scattering) {tracks[label] = MultipleScattering((Track*)tracks.At(label),BP_theta0);}
+      if(is_scattering) MultipleScattering((Track*)tracks.At(label),BP_theta0);
       if(Intersection((Hit*)BP_hits.At(c1),1,(Track*)tracks.At(label),L1_radius,intersection)){
 	new(L1_hits[c2]) Hit(*intersection);
-	if(is_scattering) tracks[label] = MultipleScattering((Track*)tracks.At(label),L1_theta0);
+	cout<<"L1_hit created "<<((Hit*)L1_hits[c2])->GetPhi()<<endl;
+	if(is_scattering) MultipleScattering((Track*)tracks.At(label),L1_theta0);
 	if(Intersection((Hit*)L1_hits.At(c2),2,(Track*)tracks.At(label),L2_radius,intersection)){
-	  new(L2_hits[c2]) Hit(*intersection);
+	  new(L2_hits[c3]) Hit(*intersection);
+	  cout<<"L2_hit created "<<((Hit*)L2_hits[c3])->GetPhi()<<endl;
 	  c3++;
 	}
 	c2++;
@@ -165,9 +167,8 @@ Bool_t EventGenerator::Intersection(Hit* layer_hit,Int_t layer_hit_number,Track*
   return Intersection(vertex,track,radius,intersection);
 }
 
-Track* EventGenerator::MultipleScattering(Track* track,Double_t theta0rms){
-  track->Rotate(gRandom->Gaus(0,theta0rms),gRandom->Uniform(0,2*Pi()));
-  return track;
+void EventGenerator::MultipleScattering(Track* track,Double_t theta0rms){
+  track->Rotate(gRandom->Gaus(0,theta0rms),gRandom->Uniform(-Pi(),Pi()));
 }
 
 string EventGenerator::RemoveWhitespaces(string& s){

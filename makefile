@@ -8,7 +8,7 @@ all: ppSimulation
 %.o: %.cxx $(HEADERS)
 	g++ -c -o $@ $< $(CFLAGS)
 
-ppSimulation_dict.cxx: $(HEADERS)
+ppSimulation_dict.cxx: $(HEADERS) ppSimulation_LinkDef.h
 	rootcint -f ppSimulation_dict.cxx -c -p $(HEADERS) ppSimulation_LinkDef.h
 	
 ppSimulation: $(OBJECTS)

@@ -6,4 +6,7 @@
 #pragma link C++ class Point+;
 #pragma link C++ class Track+;
 #pragma link C++ class EventGenerator;
+#pragma link C++ class vector<Hit>+;
+#pragma link C++ class vector<Point>+;
+#pragma link C++ class vector<Track>+;
 #endif
