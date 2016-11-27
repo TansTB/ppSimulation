@@ -8,12 +8,14 @@
 #include "EventGenerator.h"
 #include "MyParser.h"
 #include "TRandom3.h"
+#include "TStopwatch.h"
 
 using namespace std;
 
 int RunManager(char *config_file){
   vector<vector<string> > v;
   ifstream config(config_file);
+  cout<<"Reading configuration file..."<<endl;
   ColonParser(config,v);
   delete gRandom;
   gRandom = new TRandom3(stod(v.at(23).at(1)));
@@ -21,6 +23,8 @@ int RunManager(char *config_file){
   EventGenerator EG(v,tree);
   cout<<"Creating Output File..."<<endl;
   TFile* output_file = new TFile(v.at(22).at(1).c_str(),"recreate");
+  cout<<"Starting simulation.."<<endl;
+  TStopwatch* sim_watch = new TStopwatch();
   for(Int_t i=0;i<stod(v.at(21).at(1));i++){
     if(i%100==99) cout <<  i+1 << " Processed events..." << endl;
     EG.NewEvent();
@@ -30,7 +34,9 @@ int RunManager(char *config_file){
   cout << "Closing Output File: " << output_file->GetName() << endl;
   output_file->Close();
   delete output_file;
-  cout << "SIMULATION COMPLETED" << endl;
+  sim_watch->Stop();
+  cout << "Simulation completed" << endl;
+  sim_watch->Print("u");
   return 0;
 }
 
