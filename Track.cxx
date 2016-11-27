@@ -54,14 +54,13 @@ void Track::Rotate(Double_t theta_p, Double_t phi_p){
    }
 
    // angle update (theta)
-   Double_t theta_sum = theta + theta_p;
-   if (theta_sum >= Pi()) theta_sum -= Pi();
+   Double_t theta_new = ATan(Sqrt(Power(comp[0],2)+Power(comp[1],2))/comp[3]);
+   Double_t theta_sum = (theta_new>0) ? theta_new:Pi()+theta_new;
    Track::SetTheta(theta_sum);
 
    //angle update (phi)
-   Double_t phi_sum = phi + phi_p;
-   if (phi_sum >= 2*Pi()) phi_sum -= 2*Pi();
-   Track::SetPhi(phi_sum);
+   Double_t phi_new = ATan(comp[1]/comp[0]);
+   Track::SetPhi(phi_new);
 }
 
 

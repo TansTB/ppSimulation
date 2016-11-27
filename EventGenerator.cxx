@@ -62,9 +62,8 @@ EventGenerator::EventGenerator(vector<vector<string> > configs,TTree *tree){
   this->zmin_detector = stod(configs.at(33).at(1));
   this->zmax_detector = stod(configs.at(34).at(1));
   this->p = stod(configs.at(35).at(1));
-  this->BP_theta0 = Sqrt((2.*BP_thickness)/BP_X0)*13.6*BP_Z*(1+0.038*Log(BP_thickness/BP_X0))/p;
-  this->L1_theta0 = Sqrt((2.*L1_thickness)/L1_X0)*13.6*L1_Z*(1+0.038*Log(L1_thickness/L1_X0))/p;
-//   cout<<"BP Theta0: "<<BP_theta0<<endl<<"L1_theta0: "<<L1_theta0<<endl;
+  this->BP_theta0 = Sqrt((BP_thickness)/BP_X0)*13.6*BP_Z*(1+0.038*Log(BP_thickness/BP_X0))/p;
+  this->L1_theta0 = Sqrt((L1_thickness)/L1_X0)*13.6*L1_Z*(1+0.038*Log(L1_thickness/L1_X0))/p;
   
 //Tree Configuration
   tree->Branch("Vertex",&VTX);
@@ -129,11 +128,9 @@ void EventGenerator::NewEvent(){
       if(is_scattering) MultipleScattering((Track*)tracks.At(label),BP_theta0);
       if(Intersection((Hit*)BP_hits.At(c1),1,(Track*)tracks.At(label),L1_radius,intersection)){
 	new(L1_hits[c2]) Hit(*intersection);
-	cout<<"L1_hit created "<<((Hit*)L1_hits[c2])->GetPhi()<<endl;
 	if(is_scattering) MultipleScattering((Track*)tracks.At(label),L1_theta0);
 	if(Intersection((Hit*)L1_hits.At(c2),2,(Track*)tracks.At(label),L2_radius,intersection)){
 	  new(L2_hits[c3]) Hit(*intersection);
-	  cout<<"L2_hit created "<<((Hit*)L2_hits[c3])->GetPhi()<<endl;
 	  c3++;
 	}
 	c2++;
