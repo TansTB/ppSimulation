@@ -1,4 +1,5 @@
 #include "Reco.h"
+#include "Hit.cxx"
 
 using namespace std;
 using namespace TMath;
@@ -19,32 +20,37 @@ using namespace TMath;
    //Layer 1
    TBranch *b1=input_tree->GetBranch("L1_Hits");
    b1->SetAddress(&ptr_L1_hits);
-   L1_candidate=TreeLooper(ptr_L1_hits);
+   Hit * test1 = new Hit::Hit(1,Pi(),1);
+   Hit * test2= new Hit(1,0.5*Pi(),2);
    //Layer 2
    TBranch *b2=input_tree->GetBranch("L2_Hits");
    b2->SetAddress(&ptr_L2_hits);
-   L2_candidate=TreeLooper(ptr_L2_hits);
-   cout << VertexFinder(L1_candidate, L2_candidate);
+   cout << VertexFinder(test1,test2);
 }
 
 Reco::~Reco(){ delete input_tree;}
 
-Hit* Reco::TreeLooper(TClonesArray* hits){
+void Reco::TreeLooper(){
    //loop on branches
    for(Int_t i=0;i<input_tree->GetEntries();i++){
      input_tree->GetEvent(i);
-     //loop on TClonesArray
-     for(Int_t j=0;j<hits->GetEntries();j++){
-        Hit *hit=(Hit*)hits->At(j); 
-        if(j==0) return hit;
+     //loop on L1 TClonesArray
+     for(Int_t j=0;j<ptr_L1_hits->GetEntries();j++){ 
+        L1_candidate = (Hit*)ptr_L1_hits->At(j);
+        //loop on L2 TClonesArray
+        for(Int_t k=0;j<ptr_L2_hits->GetEntries();k++){
+            Hit *hit=(Hit*)ptr_L2_hits->At(k);
+            if ((Abs(hit->GetPhi() - L1_candidate->GetPhi()) <= delta_phi)) L2_candidate = hit;
+        }
      }
    }
-}
+} 
 
 Double_t Reco::VertexFinder (Hit * L1_candidate, Hit * L2_candidate){
-   return (L1_radius*Cos(L1_candidate->GetPhi())*((L2_candidate->GetZ())-(L1_candidate->GetZ()))/((L1_radius*Cos(L1_candidate->GetPhi()))-(L2_radius*(L2_candidate->GetPhi()))) + L1_candidate->GetZ();
+   return (L1_radius*Cos(L1_candidate->GetPhi())*(L2_candidate->GetZ()-L1_candidate->GetZ()))/(L1_radius*Cos(L1_candidate->GetPhi())-L2_radius*Cos(L2_candidate->GetPhi())) + L1_candidate->GetZ();
    
 }
+
 
 
 

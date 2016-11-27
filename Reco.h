@@ -25,8 +25,8 @@ public:
    Reco(Double_t delta_phi);  //this just in test mode
    ~Reco();
 
-  Hit* TreeLooper(TClonesArray* hits); //loops on given tree branches and given TClonesArray
-  Double_t VertexFinder (Hit * L1_candidate, Hit * L2_candidate);
+  void TreeLooper(); //loops on given tree branches and given TClonesArray
+  Double_t VertexFinder(Hit * L1_candidate, Hit * L2_candidate);
   //string* RemoveWhitespaces(string& s); //parser related function
 
   private:
