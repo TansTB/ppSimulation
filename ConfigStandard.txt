@@ -1,6 +1,6 @@
 //:ppSimulation Configuration File
 //:Event Configuration
-Vertex Distribution: constant ://:constant,gaussian,uniform,custom
+Vertex Distribution: gaussian ://:constant,gaussian,uniform,custom
 Vertex x,y,z: 0:0:0://:if constant
 Vertex meanx,sigmax,meany,sigmay,meanz,sigmaz: 0:0.01:0:0.01:0:5.3 ://:if gaussian
 Vertex xmin,xmax,ymin,ymax,zmin,zmax : xmin_value:xmax_value:ymin_value:ymax_value:zmin_value:zmax_value ://:if uniform
@@ -22,7 +22,7 @@ Tracks Input File: kinem.root ://:if custom
 Tracks Eta histogram name: heta ://:if custom
 //:Simulation Configuration
 Multiple Scattering: on ://:on,off
-Number of events to simulate: 1000
+Number of events to simulate: 1000000
 Output File Name: StandardSimulation.root
 Seed: 42
 //:Detector Geometry

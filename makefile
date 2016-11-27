@@ -5,10 +5,10 @@ OBJECTS = ppSimulation_dict.o Point.o Track.o Hit.o MultiplicityGenerator.o VtxG
 all: ppSimulation 
 
 
-%.o: %.cxx $(HEADERS)
+%.o: %.cxx $(HEADERS) 
 	g++ -c -o $@ $< $(CFLAGS)
 
-ppSimulation_dict.cxx: $(HEADERS) ppSimulation_LinkDef.h
+ppSimulation_dict.cxx: $(HEADERS) ppSimulation_LinkDef.h 
 	rootcint -f ppSimulation_dict.cxx -c -p $(HEADERS) ppSimulation_LinkDef.h
 	
 ppSimulation: $(OBJECTS)
