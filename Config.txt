@@ -2,7 +2,7 @@
 //:Event Configuration
 Vertex Distribution: constant ://:constant,gaussian,uniform,custom
 Vertex x,y,z: 0:0:0://:if constant
-Vertex meanx,sigmax,meany,sigmay,meanz,sigmaz: meanx:sigmax:meany:sigmay:meanz:sigmaz ://:if gaussian
+Vertex meanx,sigmax,meany,sigmay,meanz,sigmaz: 0:0.1:0:0.1:0:3 ://:if gaussian
 Vertex xmin,xmax,ymin,ymax,zmin,zmax : xmin_value:xmax_value:ymin_value:ymax_value:zmin_value:zmax_value ://:if uniform
 Vertex x Input File: x_input_file_name ://:if custom
 Vertex y Input File: y_input_file_name ://:if custom
@@ -11,7 +11,7 @@ Vertex x histogram name: x_hist_name ://:if custom
 Vertex y histogram name: y_hist_name ://:if custom
 Vertex z histogram name: z_hist_name ://:if custom
 Multiplicity Distribution: constant ://:constant,gaussian,uniform,custom
-Multiplicity Value: 6 ://:if constant
+Multiplicity Value: 20 ://:if constant
 Multiplicity mean,sigma: mean_value:sigma_value ://:if gaussian
 Multiplicity min,max: minvalue:maxvalue ://:if uniform
 Multiplicity Input File: input_file_name ://:if custom
@@ -22,7 +22,7 @@ Tracks Input File: input_file_name ://:if custom
 Tracks Eta histogram name: hist_name ://:if custom
 //:Simulation Configuration
 Multiple Scattering: on ://:on,off
-Number of events to simulate: 1000
+Number of events to simulate: 100000
 Output File Name: FirstSimulation.root
 Seed: 42
 //:Detector Geometry
@@ -42,3 +42,5 @@ Momentum: 1000 ://:(MeV/c)
 //:Noise Configuration
 Noise Hits: entries
 Hit Distribution: uniform ://:uniform,custom
+//:RecoConfiguration
+DeltaPhi: delta_phi
