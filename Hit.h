@@ -3,10 +3,11 @@
 #if !defined(__CINT__) || defined(__MAKECINT__)
 #include <iostream>
 #include "TObject.h"
+#include "TMath.h"
 #endif
 
 class Hit:public TObject{
-public:
+public: 
   Hit(){}
   Hit(Int_t label, Double_t phi, Double_t z);
   

@@ -1,6 +1,4 @@
-#include <iostream>
 #include "Hit.h"
-#include "TMath.h"
 using namespace std;
 using namespace TMath;
 
