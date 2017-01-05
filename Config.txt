@@ -40,7 +40,10 @@ Detectors Upper Z: 13.5://:Supposed to be symmetric(cm)
 //:Particle Information
 Momentum: 1000 ://:(MeV/c)
 //:Noise Configuration
-Noise Hits: entries
-Hit Distribution: uniform ://:uniform,custom
+Noise Entries Distribution: constant ://:constant,custom
+Noise Entries: 10 ://:if constant
+Noise Entries Input File: input_file_name ://:if custom
+Noise Entries Histogram name: hist_name ://:if custom
+Is Noise: true ://:true,false
 //:RecoConfiguration
 DeltaPhi: delta_phi

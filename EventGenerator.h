@@ -10,6 +10,7 @@
 #include "VtxGenerator.h"
 #include "TrackGenerator.h"
 #include "Hit.h"
+#include "Noise.h"
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -37,6 +38,7 @@ private:
   string RemoveWhitespaces(string& s);
  
   Bool_t is_scattering=kFALSE;
+  Bool_t is_noise=kTRUE;
   VtxGenerator vtx_gen;
   Int_t vtx_gen_mode;//vtx generator mode 0->constant 1->gaussian 2->uniform 3->custom
   MultiplicityGenerator mult_gen;
@@ -47,6 +49,7 @@ private:
   Point *def_vtx = VTX;
   Hit* intersection = new Hit();
   Int_t multiplicity;
+  Noise n;                    
   TTree *tree;
   TClonesArray *ptr_tracks = new TClonesArray("Track",MAX_SIZE);
   TClonesArray &tracks = *ptr_tracks;
@@ -57,7 +60,7 @@ private:
   TClonesArray *ptr_L2_hits = new TClonesArray("Hit",MAX_SIZE);  
   TClonesArray &L2_hits = *ptr_L2_hits;
   Double_t BP_radius,BP_thickness,BP_X0,BP_Z,BP_theta0,L1_radius,L1_thickness,L1_X0,L1_Z,L1_theta0,L2_radius,zmax_detector,zmin_detector,p;
-  
+  Int_t noise_entries;
 ClassDef(EventGenerator,1);
 };
 #endif

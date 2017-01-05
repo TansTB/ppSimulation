@@ -71,8 +71,20 @@ EventGenerator::EventGenerator(vector<vector<string> > configs,TTree *tree){
   tree->Branch("Multiplicity",&multiplicity);
   tree->Branch("L1_Hits",&ptr_L1_hits);
   tree->Branch("L2_Hits","TClonesArray",&ptr_L2_hits);
-}
 
+//Noise Configuration
+  if(RemoveWhitespaces(configs.at(40).at(1))=="false") is_noise=kFALSE;     //noise off
+  if(RemoveWhitespaces(configs.at(40).at(1))=="true"){ 
+     is_noise=kTRUE;                                                        //noise on           
+  }
+  if(RemoveWhitespaces(configs.at(36).at(1))=="constant"){
+    n.SetConstantEntriesNumber(stod(configs.at(37).at(1)));       
+  }
+  if(RemoveWhitespaces(configs.at(36).at(1))=="custom"){
+    n.SetCustomEntriesNumber(RemoveWhitespaces(configs.at(38).at(1)).c_str(),RemoveWhitespaces(configs.at(39).at(1)).c_str());
+  }
+}
+  
 EventGenerator::~EventGenerator(){
   delete ptr_tracks;
   delete ptr_BP_hits;
@@ -138,11 +150,20 @@ void EventGenerator::NewEvent(){
       c1++;
     }
   }
+
+  //Add noise
+  if (is_noise){
+  this->n.SetParameters(zmin_detector,zmax_detector,multiplicity);
+  this->n.NewNoise(ptr_L1_hits);
+  this->n.NewNoise(ptr_L2_hits);
+  }
+
   tree->Fill();
   ptr_BP_hits->Clear();
   ptr_L1_hits->Clear();
   ptr_L2_hits->Clear();
 }
+
 
 Bool_t EventGenerator::Intersection(Point* vertex,Track* track,Double_t radius,Hit* intersection){
   Double_t t,delta,x,y,z;
