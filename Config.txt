@@ -1,9 +1,9 @@
 //:ppSimulation Configuration File
 //:Event Configuration
 Vertex Distribution: constant ://:constant,gaussian,uniform,custom
-Vertex x,y,z: 0:0:0://:if constant
-Vertex meanx,sigmax,meany,sigmay,meanz,sigmaz: 0:0.1:0:0.1:0:3 ://:if gaussian
-Vertex xmin,xmax,ymin,ymax,zmin,zmax : xmin_value:xmax_value:ymin_value:ymax_value:zmin_value:zmax_value ://:if uniform
+Vertex x,y,z: 0:0:0://:if constant (cm)
+Vertex meanx,sigmax,meany,sigmay,meanz,sigmaz: 0:0.01:0:0.01:0:3 ://:if gaussian (cm)
+Vertex xmin,xmax,ymin,ymax,zmin,zmax : xmin_value:xmax_value:ymin_value:ymax_value:zmin_value:zmax_value ://:if uniform (cm)
 Vertex x Input File: x_input_file_name ://:if custom
 Vertex y Input File: y_input_file_name ://:if custom
 Vertex z Input File: z_input_file_name ://:if custom
