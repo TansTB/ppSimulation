@@ -25,7 +25,7 @@ public:
     Reco(Int_t t);
    ~Reco();
   
-  void DeltaPhiSampling();
+  Double_t DeltaPhiSampling();   //using simulation data, get layer 1 and layer 2 same label hit phi angle difference distribution. Output is distribution RMS.
   Double_t GetEventVertex(); //for each event, combines L1 and L2 hits according to delta_phi cut and returns the mode of candidate vertices distribution 
   Double_t GetIntersection(Hit * L1_candidate, Hit * L2_candidate); //For the provided L1,L2 hit pair, get the intersection between the reconstructed track and plane (z,0,0)
 
@@ -38,12 +38,20 @@ public:
   //General Parameters
   Hit *L1_candidate;
   Hit *L2_candidate;
-  Double_t delta_phi;
+  Double_t delta_phi, intersection;
+  //vector <Double_t> intersection_list; 
+  Double_t intersection_list[100];  //how many?
+  Int_t counter = 0;
   Double_t vertex_z = 0;
+  Double_t z_min, z_max, z_sum;
+  Double_t bin_entries = 0;
   Int_t binmax;
+  Int_t second_binmax;
+  Double_t my_bin_content, low_bin_content, high_bin_content;
   Double_t L1_radius;
   Double_t L2_radius; 
   Double_t dif;
+  Bool_t is_reconstructed;
   //Tree and hit arrays
   TH1D* delta_phi_distribution = new TH1D("delta_phi","delta_phi",100,-0.005,0.005);
   TH1D* vertex_candidates = new TH1D("vertex_candidates","vertex_candidates",150,-2,2); //1501,-15,15
