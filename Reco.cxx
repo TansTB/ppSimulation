@@ -42,7 +42,7 @@ Reco::Reco(Int_t t){
       newBranch->Fill();
       newBranch2->Fill(); 
    }
-   oldtree->Write();
+   oldtree->Write("ppSimulation",TObject::kOverwrite);
    oldfile -> Close();
 }
 
