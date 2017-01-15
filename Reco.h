@@ -23,7 +23,7 @@ public:
    Reco(){}
    //Reco(TTree *input_tree, vector<vector<string> > configs);  not in test mode
     Reco(Int_t t);
-   ~Reco();
+   ~Reco(){}
   
   Double_t DeltaPhiSampling();   //using simulation data, get layer 1 and layer 2 same label hit phi angle difference distribution. Output is distribution RMS.
   void GetEventVertex(); //for each event, combines L1 and L2 hits according to delta_phi cut and returns the mode of candidate vertices distribution 

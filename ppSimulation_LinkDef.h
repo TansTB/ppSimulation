@@ -7,6 +7,7 @@
 #pragma link C++ class Track+;
 #pragma link C++ class Noise+;
 #pragma link C++ class EventGenerator+;
+#pragma link C++ class Reco+;
 #pragma link C++ class vector<Hit>+;
 #pragma link C++ class vector<Point>+;
 #pragma link C++ class vector<Track>+;

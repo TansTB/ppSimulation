@@ -22,7 +22,7 @@ Tracks Input File: input_file_name ://:if custom
 Tracks Eta histogram name: hist_name ://:if custom
 //:Simulation Configuration
 Multiple Scattering: on ://:on,off
-Number of events to simulate: 100000
+Number of events to simulate: 100
 Output File Name: FirstSimulation.root
 Seed: 42
 //:Detector Geometry

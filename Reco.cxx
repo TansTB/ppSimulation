@@ -18,7 +18,7 @@ Reco::Reco(Int_t t){
    
    //new tree branches
    TBranch *newBranch = oldtree->Branch("RecoVertexZ",&vertex_z);
-   TBranch *newBranch2 = oldtree->Branch("is_reconstructed",&is_reconstructed);
+   TBranch *newBranch2 = oldtree->Branch("is_reconstructed",&is_reconstructed);   
    
    //read tree
    this->input_tree = oldtree;
@@ -36,17 +36,18 @@ Reco::Reco(Int_t t){
       
       //vertex is calculated for event i
       GetEventVertex();
-      //if (i<50) cout << endl <<"Check. For event " << i << " the vertex for this event is " << vertex_z << " is reconstructed? " << is_reconstructed << endl;
+//       if (i<50) cout << endl <<"Check. For event " << i << " the vertex for this event is " << vertex_z << " is reconstructed? " << is_reconstructed << endl;
 
       //fill new branches
-      if (is_reconstructed == kTRUE) newBranch->Fill();
-      newBranch2->Fill(); 
+      if (is_reconstructed == kTRUE)
+        cout << "Filling the vertex" << endl;
+        newBranch2->Fill();
+        newBranch->Fill();
    }
    oldtree->Write("ppSimulation",TObject::kOverwrite);
    oldfile -> Close();
 }
 
-Reco::~Reco(){ delete input_tree;}
 
 void Reco::GetEventVertex(){
 
