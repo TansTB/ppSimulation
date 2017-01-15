@@ -35,11 +35,11 @@ Reco::Reco(Int_t t){
       input_tree->GetEvent(i);
       
       //vertex is calculated for event i
-      vertex_z = GetEventVertex();
+      GetEventVertex();
       //if (i<50) cout << endl <<"Check. For event " << i << " the vertex for this event is " << vertex_z << " is reconstructed? " << is_reconstructed << endl;
 
       //fill new branches
-      newBranch->Fill();
+      if (is_reconstructed == kTRUE) newBranch->Fill();
       newBranch2->Fill(); 
    }
    oldtree->Write("ppSimulation",TObject::kOverwrite);
@@ -48,7 +48,7 @@ Reco::Reco(Int_t t){
 
 Reco::~Reco(){ delete input_tree;}
 
-Double_t Reco::GetEventVertex(){
+void Reco::GetEventVertex(){
 
    //loop on L1 TClonesArray
    for(Int_t j=0;j<ptr_L1_hits->GetEntries();j++){ 
@@ -105,7 +105,7 @@ Double_t Reco::GetEventVertex(){
      //vertex_candidates->DrawCopy();
      counter = 0;
      vertex_candidates->Reset();     //rest z candidates histogram
-     return z_sum / (bin_entries);   //return vertex z average  
+     vertex_z = z_sum / (bin_entries);   //return vertex z average  
    }
 
    //not recostructed events
@@ -113,7 +113,6 @@ Double_t Reco::GetEventVertex(){
      is_reconstructed = kFALSE;
      counter = 0;                   
      vertex_candidates->Reset();    //rest z candidates histogram
-     return 99;
    }	
 }
 
