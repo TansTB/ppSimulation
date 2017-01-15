@@ -13,42 +13,37 @@ Reco::Reco(Int_t t){
    //configuration
    //this->L1_radius = stod(configs.at(28).at(1));  not in test mode
    //this->L2_radius = stod(configs.at(32).at(1));  not in test mode
-   this->L1_radius = 4.;
-   this->L2_radius = 7.;
+   this->L1_radius = 4.;    //test mode
+   this->L2_radius = 7.;    //test mode
    
+   //new tree branches
    TBranch *newBranch = oldtree->Branch("RecoVertexZ",&vertex_z, "vertex_z/F");
    TBranch *newBranch2 = oldtree->Branch("is_reconstructed",&is_reconstructed, "is_reconstructed/F");
    
-
-   //read input tree
+   //read tree
    this->input_tree = oldtree;
    TBranch *b1=input_tree->GetBranch("L1_Hits");
    b1->SetAddress(&ptr_L1_hits);
    TBranch *b2=input_tree->GetBranch("L2_Hits");
    b2->SetAddress(&ptr_L2_hits);
    
-  
    //delta_phi calculation
    this->delta_phi = DeltaPhiSampling();
-   cout << endl << "delta_phi is " << delta_phi << endl;    //just in test mode
 
    //loop on events 
    for(Int_t i=0;i<input_tree->GetEntries();i++){
       input_tree->GetEvent(i);
+      
+      //vertex is calculated for event i
       vertex_z = GetEventVertex();
-      //cout << endl << " vertice " <<  << endl;
+      if (i<50) cout << endl <<"Check. For event " << i << " the vertex for this event is " << vertex_z << " is reconstructed? " << is_reconstructed << endl;
+
+      //fill new branches
       newBranch->Fill();
-      newBranch2->Fill();
-
-      //for single event plot histogram of Z vertex candidates
-      //if (i==1) cout << endl << " vertex is " << GetEventVertex() <<endl;  
+      newBranch2->Fill(); 
    }
-   //oldfile -> Close();
-
    oldtree->Write();
-   //oldfile -> Close();
-   //this->vertex_z /= input_tree->GetEntries(); 
-   //vertex_distribution->DrawCopy(); 
+   oldfile -> Close();
 }
 
 Reco::~Reco(){ delete input_tree;}
@@ -71,63 +66,55 @@ Double_t Reco::GetEventVertex(){
            intersection_list[counter] = intersection; 
            counter++;
            vertex_candidates->Fill(intersection);
-           //vertex_candidates->Fill(GetIntersection(L1_candidate,L2_candidate)); 
          }
          
       }     
      
    }
-   //z intersection array
-   //sort(begin(intersection_list),end(intersection_list));
-   //for (Int_t a = 0; a<counter; a++){
-   //cout << " z check " << intersection_list[a] << endl;
-   // }
-    
-   //get histogram maximum bin
-   binmax = vertex_candidates->GetMaximumBin();    //selected z bin number
+
+   //find maximum bin, maximum bin boundaries, second and third maximum bins
+   //highest bin
+   binmax = vertex_candidates->GetMaximumBin();    
    my_bin_content = 0;
-   my_bin_content = vertex_candidates->GetBinContent(binmax); //selected z entries
-   vertex_candidates->GetXaxis()->SetRange(0,binmax-1);  
-   low_bin_content = vertex_candidates->GetBinContent(vertex_candidates->GetMaximumBin()); //left highest bin entries
-   vertex_candidates->GetXaxis()->SetRange(binmax+1,149);
-   high_bin_content = vertex_candidates->GetBinContent(vertex_candidates->GetMaximumBin());  //right highest bin entries
-   vertex_candidates->GetXaxis()->SetRange(0,149);                                           //set range back to original size
+   my_bin_content = vertex_candidates->GetBinContent(binmax); 
    z_min = vertex_candidates->GetBinLowEdge(binmax);
-   //cout << " z min " << z_min;
    z_max = vertex_candidates->GetBinLowEdge(binmax+1);
+   //left highest bin
+   vertex_candidates->GetXaxis()->SetRange(0,binmax-1);  
+   low_bin_content = vertex_candidates->GetBinContent(vertex_candidates->GetMaximumBin());
+   //right highest bin 
+   vertex_candidates->GetXaxis()->SetRange(binmax+1,149);
+   high_bin_content = vertex_candidates->GetBinContent(vertex_candidates->GetMaximumBin());
+   //set range back to original size  
+   vertex_candidates->GetXaxis()->SetRange(0,149);                                        
    z_sum = 0;
    bin_entries = 0;
    
-   //condition to validate reconstruction
-   //cout << "max" << endl << my_bin_content << endl;
-   //Double_t my_second_bin_content = 1.5*max(low_bin_content,high_bin_content);
-   //cout << endl << " my second bin content is " << my_second_bin_content << " my bin content is " << my_bin_content << endl;
-   //cout << endl << " my bin content is " << my_bin_content << endl;
+   //condition to validate reconstruction ( maximum bin entries > 1.5 * second maximum bin entries)
+
+   //reconstructed events
    if (my_bin_content > 1.5*max(low_bin_content,high_bin_content)){
-   //if (my_bin_content > 7){
-     is_reconstructed = 1;
-     cout << endl << "kTrue" << endl; 
+     is_reconstructed = kTRUE;
+     //get highest bin z entries sum
      for (Int_t k = 0; k<=counter; k++){
        if(intersection_list[k] >= z_min && intersection_list[k] <= z_max){ 
        z_sum += intersection_list[k];
        bin_entries++;      
        }     
      }
-   //cout << endl << "bin entries is " << bin_entries << "z sum is " << z_sum << endl;
-   //vertex_candidates->DrawCopy();
+     //vertex_candidates->DrawCopy();
      counter = 0;
-     vertex_candidates->Reset();
-     return z_sum / (bin_entries);
-     
+     vertex_candidates->Reset();     //rest z candidates histogram
+     return z_sum / (bin_entries);   //return vertex z average  
    }
+
+   //not recostructed events
    else {
-     is_reconstructed = 0;
-     cout << endl << "kFalse" << endl;
-     counter = 0;
-     vertex_candidates->Reset();
+     is_reconstructed = kFALSE;
+     counter = 0;                   
+     vertex_candidates->Reset();    //rest z candidates histogram
      return 99;
    }	
- 
 }
 
 Double_t Reco::GetIntersection(Hit * L1_candidate, Hit * L2_candidate){
@@ -163,7 +150,8 @@ Double_t Reco::DeltaPhiSampling(){
         }   
       }
    }
-   //delta_phi_distribution->DrawCopy();   just here as a check, to delete in final version
+
+   //delta_phi_distribution->DrawCopy();   test mode
    return delta_phi_distribution->GetRMS(1);
 }
 
