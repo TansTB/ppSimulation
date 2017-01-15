@@ -17,8 +17,8 @@ Reco::Reco(Int_t t){
    this->L2_radius = 7.;    //test mode
    
    //new tree branches
-   TBranch *newBranch = oldtree->Branch("RecoVertexZ",&vertex_z, "vertex_z/F");
-   TBranch *newBranch2 = oldtree->Branch("is_reconstructed",&is_reconstructed, "is_reconstructed/F");
+   TBranch *newBranch = oldtree->Branch("RecoVertexZ",&vertex_z);
+   TBranch *newBranch2 = oldtree->Branch("is_reconstructed",&is_reconstructed);
    
    //read tree
    this->input_tree = oldtree;
@@ -36,7 +36,7 @@ Reco::Reco(Int_t t){
       
       //vertex is calculated for event i
       vertex_z = GetEventVertex();
-      if (i<50) cout << endl <<"Check. For event " << i << " the vertex for this event is " << vertex_z << " is reconstructed? " << is_reconstructed << endl;
+      //if (i<50) cout << endl <<"Check. For event " << i << " the vertex for this event is " << vertex_z << " is reconstructed? " << is_reconstructed << endl;
 
       //fill new branches
       newBranch->Fill();
