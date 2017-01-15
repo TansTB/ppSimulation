@@ -49,6 +49,7 @@ EventGenerator::EventGenerator(vector<vector<string> > configs,TTree *tree){
   }
   if(RemoveWhitespaces(configs.at(20).at(1))=="off"){this->is_scattering = kFALSE;}
   else{is_scattering = kTRUE;}
+  
 //Detector Configuration
   this->BP_radius = stod(configs.at(24).at(1));
   this->BP_thickness = stod(configs.at(25).at(1));
