@@ -102,7 +102,7 @@ Double_t Reco::GetEventVertex(){
    //cout << "max" << endl << my_bin_content << endl;
    //Double_t my_second_bin_content = 1.5*max(low_bin_content,high_bin_content);
    //cout << endl << " my second bin content is " << my_second_bin_content << " my bin content is " << my_bin_content << endl;
-   cout << endl << " my bin content is " << my_bin_content << endl;
+   //cout << endl << " my bin content is " << my_bin_content << endl;
    if (my_bin_content > 1.5*max(low_bin_content,high_bin_content)){
    //if (my_bin_content > 7){
      is_reconstructed = 1;
