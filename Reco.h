@@ -49,10 +49,12 @@ public:
   Double_t L2_radius; 
   Double_t dif;
   Bool_t is_reconstructed = kTRUE;
+  Double_t hist_min, hist_max;
+  Int_t hist_bin_number;
 
   //Tree and hit arrays
   TH1D* delta_phi_distribution = new TH1D("delta_phi","delta_phi",100,-0.005,0.005);
-  TH1D* vertex_candidates = new TH1D("vertex_candidates","vertex_candidates",150,-2,2); 
+  TH1D* vertex_candidates = new TH1D("vertex_candidates","vertex_candidates",10,-1,1);
   TTree *input_tree;
   TClonesArray *ptr_L1_hits = new TClonesArray("Hit",M_SIZE);
   TClonesArray &L1_hits = *ptr_L1_hits;
