@@ -7,7 +7,6 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
 // Reco::Reco(Int_t t){ 
 
    //test mode (opens tree from file)
-<<<<<<< HEAD
     //    TFile *oldfile = new TFile("FirstSimulation.root","UPDATE");
     //    TTree *input_tree = (TTree*)oldfile->Get("ppSimulation");
 
@@ -47,7 +46,6 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
         newBranch->Fill();
         newBranch2->Fill();
         if(i%100==99) cout <<  i+1 << " reconstructed events..." << endl;
-=======
 //    TFile *oldfile = new TFile("FirstSimulation.root","UPDATE");
 //    TTree *input_tree = (TTree*)oldfile->Get("ppSimulation");
 
@@ -87,7 +85,6 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
       newBranch->Fill();
       newBranch2->Fill();
       if(i%100==99) cout <<  i+1 << " reconstructed events..." << endl;
->>>>>>> 418034500f4b4e3eead5e467a8d13d0a1c8dedf6
 
    }
 //    oldtree->Write("ppSimulation",TObject::kOverwrite);
@@ -97,7 +94,6 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
 
 void Reco::GetEventVertex(){
 
-<<<<<<< HEAD
     //loop on L1 TClonesArray
     for(Int_t j=0;j<ptr_L1_hits->GetEntries();j++){ 
     L1_candidate = (Hit*)ptr_L1_hits->At(j);
@@ -162,8 +158,8 @@ void Reco::GetEventVertex(){
         counter = 0;                   
         vertex_candidates->Reset();    //rest z candidates histogram
     }	
-=======
-   //loop on L1 TClonesArray
+
+    //loop on L1 TClonesArray
    for(Int_t j=0;j<ptr_L1_hits->GetEntries();j++){ 
    L1_candidate = (Hit*)ptr_L1_hits->At(j);
 
@@ -227,7 +223,7 @@ void Reco::GetEventVertex(){
      counter = 0;                   
      vertex_candidates->Reset();    //rest z candidates histogram
    }	
->>>>>>> 418034500f4b4e3eead5e467a8d13d0a1c8dedf6
+
 }
 
 Double_t Reco::GetIntersection(Hit * L1_candidate, Hit * L2_candidate){
