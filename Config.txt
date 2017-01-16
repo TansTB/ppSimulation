@@ -1,8 +1,8 @@
 //:ppSimulation Configuration File
 //:Event Configuration
-Vertex Distribution: constant ://:constant,gaussian,uniform,custom
+Vertex Distribution: gaussian://:constant,gaussian,uniform,custom
 Vertex x,y,z: 0:0:0://:if constant (cm)
-Vertex meanx,sigmax,meany,sigmay,meanz,sigmaz: 0:0.01:0:0.01:0:3 ://:if gaussian (cm)
+Vertex meanx,sigmax,meany,sigmay,meanz,sigmaz: 0:0.01:0:0.01:0:5.3 ://:if gaussian (cm)
 Vertex xmin,xmax,ymin,ymax,zmin,zmax : xmin_value:xmax_value:ymin_value:ymax_value:zmin_value:zmax_value ://:if uniform (cm)
 Vertex x Input File: x_input_file_name ://:if custom
 Vertex y Input File: y_input_file_name ://:if custom
@@ -10,19 +10,19 @@ Vertex z Input File: z_input_file_name ://:if custom
 Vertex x histogram name: x_hist_name ://:if custom
 Vertex y histogram name: y_hist_name ://:if custom
 Vertex z histogram name: z_hist_name ://:if custom
-Multiplicity Distribution: constant ://:constant,gaussian,uniform,custom
+Multiplicity Distribution: custom ://:constant,gaussian,uniform,custom
 Multiplicity Value: 20 ://:if constant
 Multiplicity mean,sigma: mean_value:sigma_value ://:if gaussian
 Multiplicity min,max: minvalue:maxvalue ://:if uniform
-Multiplicity Input File: input_file_name ://:if custom
-Multiplicity Histogram name: hist_name ://:if custom
-Tracks Distribution: uniform ://:uniform,custom
+Multiplicity Input File: kinem.root ://:if custom
+Multiplicity Histogram name: hmul ://:if custom
+Tracks Distribution: custom ://:uniform,custom
 Tracks thetamin,thetamax: 1.5 : 1.7 ://:if uniform
-Tracks Input File: input_file_name ://:if custom
-Tracks Eta histogram name: hist_name ://:if custom
+Tracks Input File: kinem.root ://:if custom
+Tracks Eta histogram name: heta ://:if custom
 //:Simulation Configuration
 Multiple Scattering: on ://:on,off
-Number of events to simulate: 100
+Number of events to simulate: 1000000
 Output File Name: FirstSimulation.root
 Seed: 42
 //:Detector Geometry

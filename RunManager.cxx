@@ -5,10 +5,11 @@
 #include<algorithm>
 #include "TFile.h"
 #include "TTree.h"
-#include "EventGenerator.h"
-#include "MyParser.h"
 #include "TRandom3.h"
 #include "TStopwatch.h"
+#include "EventGenerator.h"
+#include "Reco.h"
+#include "MyParser.h"
 
 using namespace std;
 
@@ -26,17 +27,25 @@ int RunManager(char *config_file){
   cout<<"Starting simulation.."<<endl;
   TStopwatch* sim_watch = new TStopwatch();
   for(Int_t i=0;i<stod(v.at(21).at(1));i++){
-    if(i%100==99) cout <<  i+1 << " Processed events..." << endl;
-    EG.NewEvent();
+//     cout << "Event " << i<< endl;
+    EG.NewEvent();  
+    if(i%100==99) cout <<  i+1 << " generated events..." << endl;
   }
+  sim_watch->Stop();
+  cout << "Simulation completed" << endl;
+  sim_watch->Print("u");
+  cout << "Starting reconstruction.." << endl;
+  sim_watch->Reset();
+  sim_watch->Start();
+  Reco Reconstruction(v,tree);
+  sim_watch->Stop();
+  cout << "Reconstruction completed" << endl;
+  sim_watch->Print("u");
   tree->Write();
   delete tree;
   cout << "Closing Output File: " << output_file->GetName() << endl;
   output_file->Close();
   delete output_file;
-  sim_watch->Stop();
-  cout << "Simulation completed" << endl;
-  sim_watch->Print("u");
   return 0;
 }
 

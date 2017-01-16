@@ -22,7 +22,8 @@ void Noise::SetParameters(Double_t zmin_detector, Double_t zmax_detector, Int_t 
 
 void Noise::NewNoise(TClonesArray *ptr_noise){
   TClonesArray &noise= *ptr_noise;
-     for (Int_t counter=multiplicity; counter<(multiplicity+entries); counter++){
+  Int_t starting_point = ptr_noise->GetLast()+1;
+     for (Int_t counter=starting_point; counter<(starting_point+entries); counter++){
         new(noise[counter]) Hit(*GetUniformHits()); 
      }
 }

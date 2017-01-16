@@ -97,6 +97,7 @@ EventGenerator::~EventGenerator(){
 
 void EventGenerator::NewEvent(){
   //Generate Vertex
+
   switch(vtx_gen_mode){
     case 0 : VTX = vtx_gen.GetConstVtx();
      break;
@@ -106,6 +107,7 @@ void EventGenerator::NewEvent(){
      break;
     case 3 : VTX = vtx_gen.GetCustomVtx();
   }
+//   cout << "VTX: "<<VTX->GetX()<< " "<<VTX->GetY() << " "<<VTX->GetZ() << endl;
   //Generate Multiplicity
   switch(mult_gen_mode){
     case 0 : multiplicity = mult_gen.GetConstMultiplicity();
@@ -117,6 +119,7 @@ void EventGenerator::NewEvent(){
     case 3 : multiplicity = mult_gen.GetCustomMultiplicity();
      break;
   }
+//   cout<<"Multiplicity: "<<multiplicity<<endl;
   //Generate Tracks
   switch(track_gen_mode){
     case 0 : {
@@ -132,6 +135,7 @@ void EventGenerator::NewEvent(){
     }
     break;
   } 
+  
   //Calculating Hits
     Int_t c1=0,c2=0,c3=0;
   for (Int_t label=0;label<multiplicity;label++){
@@ -158,7 +162,7 @@ void EventGenerator::NewEvent(){
   this->n.NewNoise(ptr_L1_hits);
   this->n.NewNoise(ptr_L2_hits);
   }
-
+  
   tree->Fill();
   ptr_BP_hits->Clear();
   ptr_L1_hits->Clear();

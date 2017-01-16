@@ -3,33 +3,33 @@
 using namespace std;
 using namespace TMath;
 
-//Reco::Reco(TTree *input_tree, vector<vector<string> > configs){ not in test mode 
-Reco::Reco(Int_t t){ 
+Reco::Reco(vector<vector<string> > configs,TTree *input_tree){ 
+// Reco::Reco(Int_t t){ 
 
    //test mode (opens tree from file)
-   TFile *oldfile = new TFile("FirstSimulation.root","UPDATE");
-   TTree *oldtree = (TTree*)oldfile->Get("ppSimulation");
+//    TFile *oldfile = new TFile("FirstSimulation.root","UPDATE");
+//    TTree *input_tree = (TTree*)oldfile->Get("ppSimulation");
 
    //configuration
-   //this->L1_radius = stod(configs.at(28).at(1));  not in test mode
-   //this->L2_radius = stod(configs.at(32).at(1));  not in test mode
-   this->L1_radius = 4.;    //test mode
-   this->L2_radius = 7.;    //test mode
-   
-   //new tree branches
-   TBranch *newBranch = oldtree->Branch("RecoVertexZ",&vertex_z);
-   TBranch *newBranch2 = oldtree->Branch("is_reconstructed",&is_reconstructed);   
-   
+   this->L1_radius = stod(configs.at(28).at(1));
+   this->L2_radius = stod(configs.at(32).at(1));
+   this->input_tree = input_tree;
+//    this->L1_radius = 4.;    //test mode
+//    this->L2_radius = 7.;    //test mode
    //read tree
-   this->input_tree = oldtree;
    TBranch *b1=input_tree->GetBranch("L1_Hits");
    b1->SetAddress(&ptr_L1_hits);
    TBranch *b2=input_tree->GetBranch("L2_Hits");
    b2->SetAddress(&ptr_L2_hits);
    
    //delta_phi calculation
+   cout << "Estimating DeltaPhi"<< endl;
    this->delta_phi = DeltaPhiSampling();
-
+   cout << "DeltaPhi set to " << delta_phi << "rad" << endl;
+   //new tree branches
+   TBranch *newBranch = input_tree->Branch("RecoVertexZ",&vertex_z);
+   TBranch *newBranch2 = input_tree->Branch("is_reconstructed",&is_reconstructed);   
+   
    //loop on events 
    for(Int_t i=0;i<input_tree->GetEntries();i++){
       input_tree->GetEvent(i);
@@ -39,13 +39,14 @@ Reco::Reco(Int_t t){
 //       if (i<50) cout << endl <<"Check. For event " << i << " the vertex for this event is " << vertex_z << " is reconstructed? " << is_reconstructed << endl;
 
       //fill new branches
-      if (is_reconstructed == kTRUE)
-        cout << "Filling the vertex" << endl;
-        newBranch2->Fill();
-        newBranch->Fill();
+      if (!is_reconstructed) vertex_z = -999999;
+      newBranch->Fill();
+      newBranch2->Fill();
+      if(i%100==99) cout <<  i+1 << " reconstructed events..." << endl;
+
    }
-   oldtree->Write("ppSimulation",TObject::kOverwrite);
-   oldfile -> Close();
+//    oldtree->Write("ppSimulation",TObject::kOverwrite);
+//    oldfile -> Close();
 }
 
 
@@ -132,7 +133,6 @@ Double_t Reco::DeltaPhiSampling(){
    //loop on events
    for(Int_t i=0;i<input_tree->GetEntries();i++){
       input_tree->GetEvent(i);   
-
       //loop on L1 TClonesArray
       for(Int_t j=0;j<ptr_L1_hits->GetEntries();j++){ 
       L1_candidate = (Hit*)ptr_L1_hits->At(j);
