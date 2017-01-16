@@ -22,7 +22,7 @@ Tracks Input File: kinem.root ://:if custom
 Tracks Eta histogram name: heta ://:if custom
 //:Simulation Configuration
 Multiple Scattering: on ://:on,off
-Number of events to simulate: 1000000
+Number of events to simulate: 10000
 Output File Name: FirstSimulation.root
 Seed: 42
 //:Detector Geometry
@@ -46,4 +46,5 @@ Noise Entries Input File: input_file_name ://:if custom
 Noise Entries Histogram name: hist_name ://:if custom
 Is Noise: true ://:true,false
 //:RecoConfiguration
-DeltaPhi: delta_phi
+Estimate delta_phi: yes ://:yes,no
+DeltaPhi: delta_phi ://std deviation of the delta_phi distribution

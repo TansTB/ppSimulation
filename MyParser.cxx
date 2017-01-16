@@ -58,3 +58,8 @@ void ColonParser(ifstream& file_to_parse,vector<vector<string> >& spreadsheet){
     }
   }
 }
+
+string RemoveWhitespaces(string& s){
+  s.erase(std::remove_if(s.begin(),s.end(),[](char c){return std::isspace(static_cast<unsigned char>(c));}),s.end());
+  return s;
+}

@@ -11,6 +11,7 @@
 #include "TrackGenerator.h"
 #include "Hit.h"
 #include "Noise.h"
+#include "MyParser.h"
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -35,7 +36,6 @@ private:
   void MultipleScattering(Track* track,Double_t theta0rms);
   Bool_t Intersection(Point* vertex,Track* track,Double_t radius,Hit* intersection);
   Bool_t Intersection(Hit* layer_hit,Int_t layer_number,Track* track,Double_t radius,Hit* intersection);
-  string RemoveWhitespaces(string& s);
  
   Bool_t is_scattering=kFALSE;
   Bool_t is_noise=kTRUE;

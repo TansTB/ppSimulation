@@ -33,9 +33,7 @@ public:
   
   void GetEventVertex(); //for each event, combines L1 and L2 hits according to delta_phi cut and returns the mode of candidate vertices distribution 
   Double_t GetIntersection(Hit * L1_candidate, Hit * L2_candidate); //For the provided L1,L2 hit pair, get the intersection between the reconstructed track and plane (z,0,0)
-
-  string RemoveWhitespaces(string& s);
-
+  
   //General Parameters
   Hit *L1_candidate;
   Hit *L2_candidate;

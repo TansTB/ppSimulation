@@ -13,6 +13,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <stdlib.h>
 
 using namespace std;
@@ -22,4 +23,5 @@ void CSVParser(ifstream& file_to_parse, vector<vector<string> >& spreadsheet);//
 								  //of vectors containing the fields. spreadsheet should be empty
 void ColonParser(ifstream& file_to_parse, vector<vector<string> >& spreadsheet);//Function to turn a colon separated .txt file in a vector
 								  //of vectors containing the fields. spreadsheet should be empty
+string RemoveWhitespaces(string& s); //Function to remove whitespaces from a string
 #endif

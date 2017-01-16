@@ -193,8 +193,3 @@ Bool_t EventGenerator::Intersection(Hit* layer_hit,Int_t layer_hit_number,Track*
 void EventGenerator::MultipleScattering(Track* track,Double_t theta0rms){
   track->Rotate(gRandom->Gaus(0,theta0rms),gRandom->Uniform(-Pi(),Pi()));
 }
-
-string EventGenerator::RemoveWhitespaces(string& s){
-  s.erase(std::remove_if(s.begin(),s.end(),[](char c){return std::isspace(static_cast<unsigned char>(c));}),s.end());
-  return s;
-}

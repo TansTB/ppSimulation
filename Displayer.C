@@ -20,24 +20,8 @@ using namespace TMath;
 void ResolutionHistogram(string input_file_name){
     TFile *input_file = new TFile(input_file_name.c_str());
     TTree *input_tree = (TTree*)input_file->Get("ppSimulation");
-    Point VTX;
-    Point *VTX_ptr = &VTX;
-    Double_t RecoVTX_Z;
-    Double_t *RecoVTX_Z_ptr = &RecoVTX_Z;
-    Bool_t isReconstructed=0;
-    Bool_t *isReconstructed_ptr = &isReconstructed;
-    TH1D *ResHist = new TH1D("ResolutionHistogram","Risoluzione;Z generata - Z ricostruita (cm); Risoluzione (cm)",100,-2,2);
-    TBranch *b1=input_tree->GetBranch("Vertex");
-    b1->SetAddress(&VTX_ptr);
-    TBranch *b2=input_tree->GetBranch("RecoVertexZ");
-    b2->SetAddress(&RecoVTX_Z_ptr);
-    TBranch *b3=input_tree->GetBranch("is_reconstructed");
-    b3->SetAddress(&isReconstructed_ptr);
-    for (Int_t i=0;i<input_tree->GetEntries();i++){
-        input_tree->GetEvent(i);
-        if(isReconstructed) ResHist->Fill(VTX.GetZ()/*-RecoVTX_Z*/);
-    }
-    ResHist->DrawCopy();
+    input_tree->Draw("z-RecoVertexZ","is_reconstructed");
+    TH1F *ResHist = (TH1F*)gPad->GetPrimitive("htemp");
     input_file->Close();
 }
 
