@@ -8,6 +8,7 @@
 #include "Point.h"
 #include "Hit.h"
 #include "TMath.h"
+#include "TPad.h"
 #include <algorithm>
 #include <vector>
 #include <string>
@@ -59,7 +60,7 @@ void ResolutionVsGeneratedZHistogram(string input_file_name){
     GeneratedZToSearch.push_back(GeneratedZAux.at(0));
     for(Double_t i : GeneratedZAux) if(i>GeneratedZToSearch.back())GeneratedZToSearch.push_back(i);
     for(Double_t i : GeneratedZToSearch){
-        for(Int_t j;j<GeneratedZ.size();j++){
+        for(unsigned j=0;j<GeneratedZ.size();j++){
             if(GeneratedZ.at(j)==i)ResHist->Fill(GeneratedZ.at(j)-RecoZ.at(j));
         }
         ResVsZHist->Fill(i,ResHist->GetStdDev());
@@ -109,7 +110,7 @@ void ResolutionVsMultiplicityHistogram(string input_file_name){
     MultiplicityToSearch.push_back(MultiplicityAux.at(0));
     for(Int_t i : MultiplicityAux) if(i>MultiplicityToSearch.back())MultiplicityToSearch.push_back(i);
     for(Int_t i : MultiplicityToSearch){
-        for(Int_t j;j<Multiplicity.size();j++){
+        for(unsigned j=0;j<Multiplicity.size();j++){
             if(Multiplicity.at(j)==i)ResHist->Fill(GeneratedZ.at(j)-RecoZ.at(j));
         }
         ResVsMultHist->Fill(i,ResHist->GetStdDev());
