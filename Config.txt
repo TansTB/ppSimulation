@@ -37,6 +37,8 @@ Layer 1 Material Z: 14
 Layer 2 Detector Radius: 7://:(cm)
 Detectors Lower Z: -13.5://:Supposed to be symmetric(cm)
 Detectors Upper Z: 13.5://:Supposed to be symmetric(cm)
+Detectors Z Resolution: 0.012://:(cm)
+Detectors rPhi Resolution: 0.003://:(cm)
 //:Particle Information
 Momentum: 1000 ://:(MeV/c)
 //:Noise Configuration
@@ -45,6 +47,6 @@ Noise Entries: 10 ://:if constant
 Noise Entries Input File: input_file_name ://:if custom
 Noise Entries Histogram name: hist_name ://:if custom
 Is Noise: true ://:true,false
-//:RecoConfiguration
+//:Reco Configuration
 Estimate delta_phi: yes ://:yes,no
-DeltaPhi: delta_phi ://std deviation of the delta_phi distribution
+DeltaPhi: 0.002 ://std deviation of the delta_phi distribution

@@ -9,6 +9,7 @@
 #include "Hit.h"
 #include "TMath.h"
 #include "TPad.h"
+#include "TROOT.h"
 #include <algorithm>
 #include <vector>
 #include <string>
@@ -17,6 +18,10 @@
 using namespace std;
 using namespace TMath;
 
+void CompilePrerequisites(){
+    gROOT->ProcessLine(".L Point.cxx++");
+    gROOT->ProcessLine(".L Hit.cxx++");
+}
 //Function to print the resolution histogram
 void ResolutionHistogram(string input_file_name){
     TFile *input_file = new TFile(input_file_name.c_str());

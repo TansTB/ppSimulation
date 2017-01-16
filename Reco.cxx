@@ -13,6 +13,10 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
     //configuration
     this->L1_radius = stod(configs.at(28).at(1));
     this->L2_radius = stod(configs.at(32).at(1));
+    this->hist_min =  stod(configs.at(33).at(1));
+    this->hist_max =  stod(configs.at(34).at(1));
+    hist_bin_number = 37*(hist_max - hist_min);
+    vertex_candidates->SetBins(hist_bin_number,hist_min,hist_max);
     this->input_tree = input_tree;
     //    this->L1_radius = 4.;    //test mode
     //    this->L2_radius = 7.;    //test mode
@@ -23,7 +27,7 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
     b2->SetAddress(&ptr_L2_hits);
     
     //delta_phi calculation
-    if (RemoveWhitespaces(configs.at(41).at(1)) == "no") delta_phi = stod(configs.at(42).at(1));
+    if (RemoveWhitespaces(configs.at(43).at(1)) == "no") delta_phi = stod(configs.at(44).at(1));
     else{
         cout << "Estimating DeltaPhi"<< endl;
         this->delta_phi = DeltaPhiSampling();
@@ -36,7 +40,6 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
     //loop on events 
     for(Int_t i=0;i<input_tree->GetEntries();i++){
         input_tree->GetEvent(i);
-        
         //vertex is calculated for event i
         GetEventVertex();
     //       if (i<50) cout << endl <<"Check. For event " << i << " the vertex for this event is " << vertex_z << " is reconstructed? " << is_reconstructed << endl;

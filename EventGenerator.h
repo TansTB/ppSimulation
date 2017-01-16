@@ -48,6 +48,7 @@ private:
   Point *VTX = new Point();
   Point *def_vtx = VTX;
   Hit* intersection = new Hit();
+  Hit* intersection_recorded = new Hit();
   Int_t multiplicity;
   Noise n;                    
   TTree *tree;
@@ -55,11 +56,15 @@ private:
   TClonesArray &tracks = *ptr_tracks;
   TClonesArray *ptr_BP_hits = new TClonesArray("Hit",MAX_SIZE);
   TClonesArray &BP_hits = *ptr_BP_hits;
-  TClonesArray *ptr_L1_hits = new TClonesArray("Hit",MAX_SIZE);
+  TClonesArray *ptr_L1_hits = new TClonesArray("Hit",MAX_SIZE);//real hits on the first layer
   TClonesArray &L1_hits = *ptr_L1_hits;
-  TClonesArray *ptr_L2_hits = new TClonesArray("Hit",MAX_SIZE);  
+  TClonesArray *ptr_L2_hits = new TClonesArray("Hit",MAX_SIZE);//real hits on the second layer
   TClonesArray &L2_hits = *ptr_L2_hits;
-  Double_t BP_radius,BP_thickness,BP_X0,BP_Z,BP_theta0,L1_radius,L1_thickness,L1_X0,L1_Z,L1_theta0,L2_radius,zmax_detector,zmin_detector,p;
+  TClonesArray *ptr_L1_hits_recorded = new TClonesArray("Hit",MAX_SIZE);//Hits on the first layer recorded by the detector
+  TClonesArray &L1_hits_recorded = *ptr_L1_hits_recorded;
+  TClonesArray *ptr_L2_hits_recorded = new TClonesArray("Hit",MAX_SIZE);//hits on the second layer recorded by the detector
+  TClonesArray &L2_hits_recorded = *ptr_L2_hits_recorded;
+  Double_t BP_radius,BP_thickness,BP_X0,BP_Z,BP_theta0,L1_radius,L1_thickness,L1_X0,L1_Z,L1_theta0,L2_radius,zmax_detector,zmin_detector,zres_detector,rphires_detector,p;
   Int_t noise_entries;
 ClassDef(EventGenerator,1);
 };

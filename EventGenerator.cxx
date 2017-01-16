@@ -62,7 +62,9 @@ EventGenerator::EventGenerator(vector<vector<string> > configs,TTree *tree){
   this->L2_radius = stod(configs.at(32).at(1));
   this->zmin_detector = stod(configs.at(33).at(1));
   this->zmax_detector = stod(configs.at(34).at(1));
-  this->p = stod(configs.at(35).at(1));
+  this->zres_detector = stod(configs.at(35).at(1));
+  this->rphires_detector = stod(configs.at(36).at(1));
+  this->p = stod(configs.at(37).at(1));
   this->BP_theta0 = Sqrt((BP_thickness)/BP_X0)*13.6*BP_Z*(1+0.038*Log(BP_thickness/BP_X0))/p;
   this->L1_theta0 = Sqrt((L1_thickness)/L1_X0)*13.6*L1_Z*(1+0.038*Log(L1_thickness/L1_X0))/p;
   
@@ -70,19 +72,20 @@ EventGenerator::EventGenerator(vector<vector<string> > configs,TTree *tree){
   tree->Branch("Vertex",&VTX);
   cout<<"Creating Tree Branches..."<<endl;
   tree->Branch("Multiplicity",&multiplicity);
-  tree->Branch("L1_Hits",&ptr_L1_hits);
-  tree->Branch("L2_Hits","TClonesArray",&ptr_L2_hits);
+  tree->Branch("L1_Hits","TClonesArray",&ptr_L1_hits_recorded);
+  tree->Branch("L2_Hits","TClonesArray",&ptr_L2_hits_recorded);
 
 //Noise Configuration
-  if(RemoveWhitespaces(configs.at(40).at(1))=="false") is_noise=kFALSE;     //noise off
-  if(RemoveWhitespaces(configs.at(40).at(1))=="true"){ 
+  if(RemoveWhitespaces(configs.at(42).at(1))=="false") is_noise=kFALSE;     //noise off
+  
+  if(RemoveWhitespaces(configs.at(42).at(1))=="true"){ 
      is_noise=kTRUE;                                                        //noise on           
   }
-  if(RemoveWhitespaces(configs.at(36).at(1))=="constant"){
-    n.SetConstantEntriesNumber(stod(configs.at(37).at(1)));       
+  if(RemoveWhitespaces(configs.at(38).at(1))=="constant"){
+    n.SetConstantEntriesNumber(stod(configs.at(39).at(1)));       
   }
-  if(RemoveWhitespaces(configs.at(36).at(1))=="custom"){
-    n.SetCustomEntriesNumber(RemoveWhitespaces(configs.at(38).at(1)).c_str(),RemoveWhitespaces(configs.at(39).at(1)).c_str());
+  if(RemoveWhitespaces(configs.at(38).at(1))=="custom"){
+    n.SetCustomEntriesNumber(RemoveWhitespaces(configs.at(40).at(1)).c_str(),RemoveWhitespaces(configs.at(41).at(1)).c_str());
   }
 }
   
@@ -91,8 +94,11 @@ EventGenerator::~EventGenerator(){
   delete ptr_BP_hits;
   delete ptr_L1_hits;
   delete ptr_L2_hits;
+  delete ptr_L1_hits_recorded;
+  delete ptr_L2_hits_recorded;
   delete def_vtx;
   delete intersection;
+  delete intersection_recorded;
 }
 
 void EventGenerator::NewEvent(){
@@ -141,32 +147,41 @@ void EventGenerator::NewEvent(){
   for (Int_t label=0;label<multiplicity;label++){
     if(Intersection(VTX,(Track*)tracks.At(label),BP_radius,intersection)){
       intersection->SetLabel(label);
+      intersection_recorded->SetLabel(label);
       new(BP_hits[c1]) Hit(*intersection);
       if(is_scattering) MultipleScattering((Track*)tracks.At(label),BP_theta0);
       if(Intersection((Hit*)BP_hits.At(c1),1,(Track*)tracks.At(label),L1_radius,intersection)){
-	new(L1_hits[c2]) Hit(*intersection);
-	if(is_scattering) MultipleScattering((Track*)tracks.At(label),L1_theta0);
-	if(Intersection((Hit*)L1_hits.At(c2),2,(Track*)tracks.At(label),L2_radius,intersection)){
-	  new(L2_hits[c3]) Hit(*intersection);
-	  c3++;
-	}
-	c2++;
+        intersection_recorded->SetZ(gRandom->Gaus(intersection->GetZ(),zres_detector));
+        intersection_recorded->SetPhi(gRandom->Gaus(intersection->GetPhi(),rphires_detector/L1_radius));
+        new(L1_hits[c2]) Hit(*intersection);
+        new(L1_hits_recorded[c2]) Hit(*intersection_recorded);
+        if(is_scattering) MultipleScattering((Track*)tracks.At(label),L1_theta0);
+        if(Intersection((Hit*)L1_hits.At(c2),2,(Track*)tracks.At(label),L2_radius,intersection)){
+            intersection_recorded->SetZ(gRandom->Gaus(intersection->GetZ(),zres_detector));
+            intersection_recorded->SetPhi(gRandom->Gaus(intersection->GetPhi(),rphires_detector/L2_radius));
+            new(L2_hits[c3]) Hit(*intersection);
+            new(L2_hits_recorded[c3]) Hit(*intersection_recorded);
+            c3++;
+        }
+        c2++;
       }
       c1++;
     }
   }
-
+      
   //Add noise
   if (is_noise){
   this->n.SetParameters(zmin_detector,zmax_detector,multiplicity);
-  this->n.NewNoise(ptr_L1_hits);
-  this->n.NewNoise(ptr_L2_hits);
+  this->n.NewNoise(ptr_L1_hits_recorded);
+  this->n.NewNoise(ptr_L2_hits_recorded);
   }
   
   tree->Fill();
   ptr_BP_hits->Clear();
   ptr_L1_hits->Clear();
   ptr_L2_hits->Clear();
+  ptr_L1_hits_recorded->Clear();
+  ptr_L2_hits_recorded->Clear();    
 }
 
 
