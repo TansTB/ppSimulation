@@ -12,10 +12,13 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
 
    //configuration
    this->L1_radius = stod(configs.at(28).at(1));
-   this->L2_radius = stod(configs.at(32).at(1));
+   this->L2_radius = stod(configs.at(32).at(1)); 
+   this->hist_min =  stod(configs.at(33).at(1));
+   this->hist_max =  stod(configs.at(34).at(1));
+   hist_bin_number = 37*(hist_max - hist_min);
+   vertex_candidates->SetBins(hist_bin_number,hist_min,hist_max);
    this->input_tree = input_tree;
-//    this->L1_radius = 4.;    //test mode
-//    this->L2_radius = 7.;    //test mode
+
    //read tree
    TBranch *b1=input_tree->GetBranch("L1_Hits");
    b1->SetAddress(&ptr_L1_hits);
@@ -85,10 +88,10 @@ void Reco::GetEventVertex(){
    vertex_candidates->GetXaxis()->SetRange(0,binmax-1);  
    low_bin_content = vertex_candidates->GetBinContent(vertex_candidates->GetMaximumBin());
    //right highest bin 
-   vertex_candidates->GetXaxis()->SetRange(binmax+1,149);
+   vertex_candidates->GetXaxis()->SetRange(binmax+1,hist_bin_number-1);
    high_bin_content = vertex_candidates->GetBinContent(vertex_candidates->GetMaximumBin());
    //set range back to original size  
-   vertex_candidates->GetXaxis()->SetRange(0,149);                                        
+   vertex_candidates->GetXaxis()->SetRange(0,hist_bin_number-1);                                        
    z_sum = 0;
    bin_entries = 0;
    
