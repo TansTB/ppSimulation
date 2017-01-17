@@ -10,11 +10,12 @@
 #include "TH1D.h"
 #include "TMath.h"
 #include "MyParser.h"
+#include "TBranch.h"
+#include "TCanvas.h"//remove!!
 #include <vector>
 #include <string>
 #include <algorithm>
 #include <iostream>
-#include "TBranch.h"
 #endif
 
 const Int_t M_SIZE = 400;
@@ -38,7 +39,7 @@ public:
   Hit *L1_candidate;
   Hit *L2_candidate;
   Double_t delta_phi, intersection;
-  Double_t intersection_list[100];       //how many?
+  Double_t intersection_list[1000];       //how many?
   Int_t counter = 0;
   Double_t vertex_z = 0;
   Double_t z_min, z_max, z_sum;
@@ -54,7 +55,7 @@ public:
 
   //Tree and hit arrays
   TH1D* delta_phi_distribution = new TH1D("delta_phi","delta_phi",100,-0.005,0.005);
-  TH1D* vertex_candidates = new TH1D("vertex_candidates","vertex_candidates",10,-1,1);
+  TH1D* vertex_candidates;
   TTree *input_tree;
   TClonesArray *ptr_L1_hits = new TClonesArray("Hit",M_SIZE);
   TClonesArray &L1_hits = *ptr_L1_hits;

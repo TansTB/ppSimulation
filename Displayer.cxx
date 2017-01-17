@@ -24,6 +24,20 @@ void ResolutionHistogram(string input_file_name){
     TTree *input_tree = (TTree*)input_file->Get("ppSimulation");
     input_tree->Draw("z-RecoVertexZ","is_reconstructed");
     TH1F *ResHist = (TH1F*)gPad->GetPrimitive("htemp");
+//         Point VTX;
+//     Point *VTX_ptr=&VTX;
+//     Double_t RecoVTX_Z;
+//         TBranch *b1=input_tree->GetBranch("Vertex");
+//     b1->SetAddress(&VTX_ptr);
+//     TBranch *b2=input_tree->GetBranch("RecoVertexZ");
+//     b2->SetAddress(&RecoVTX_Z);
+//         TH1D *ResVsZHist = new TH1D("ResolutionVsZHistogram","Risoluzione vs Z generata;Z (cm);Risoluzione (cm)",33,-16.5,16.5);
+//     for (Int_t i=0;i<input_tree->GetEntries();i++){
+//         input_tree->GetEvent(i);
+//         cout << VTX.GetZ()<<"\t"<<RecoVTX_Z<<endl;
+//         ResVsZHist->Fill(VTX.GetZ()-RecoVTX_Z);
+//     }
+//     ResVsZHist->DrawCopy();
     input_file->Close();
 }
 
@@ -32,11 +46,9 @@ void ResolutionVsGeneratedZHistogram(string input_file_name){
     TFile *input_file = new TFile(input_file_name.c_str());
     TTree *input_tree = (TTree*)input_file->Get("ppSimulation");
     Point VTX;
-    Point *VTX_ptr = &VTX;
+    Point *VTX_ptr=&VTX;
     Double_t RecoVTX_Z;
-    Double_t *RecoVTX_Z_ptr = &RecoVTX_Z;
-    Bool_t isReconstructed=0;
-    Bool_t *isReconstructed_ptr = &isReconstructed;
+    Bool_t isReconstructed;
     vector<Double_t>GeneratedZ;
     vector<Double_t>RecoZ;
     Double_t errors[33];
@@ -44,33 +56,33 @@ void ResolutionVsGeneratedZHistogram(string input_file_name){
     TBranch *b1=input_tree->GetBranch("Vertex");
     b1->SetAddress(&VTX_ptr);
     TBranch *b2=input_tree->GetBranch("RecoVertexZ");
-    b2->SetAddress(&RecoVTX_Z_ptr);
+    b2->SetAddress(&RecoVTX_Z);
     TBranch *b3=input_tree->GetBranch("is_reconstructed");
-    b3->SetAddress(&isReconstructed_ptr);
+    b3->SetAddress(&isReconstructed);
     for (Int_t i=0;i<input_tree->GetEntries();i++){
         input_tree->GetEvent(i);
-        if (isReconstructed) {
-            cout<<"CHECK "<< i<<endl;
-            GeneratedZ.push_back(VTX.GetZ());
-            RecoZ.push_back(RecoVTX_Z); 
+        if (isReconstructed==kTRUE) {
+            cout<<"CHECK "<< i<<" " << isReconstructed<<" "<< VTX.GetZ()<<endl;
+//             GeneratedZ.push_back(VTX.GetZ());
+//             RecoZ.push_back(RecoVTX_Z); 
         }
     }
-    TH1D *ResHist = new TH1D("ResolutionHistogram","Risoluzione",100,-20,20);
-    vector<Double_t>GeneratedZAux(GeneratedZ);
-    vector<Double_t>GeneratedZToSearch;
-    sort(GeneratedZAux.begin(),GeneratedZAux.end());
-    GeneratedZToSearch.push_back(GeneratedZAux.at(0));
-    for(Double_t i : GeneratedZAux) if(i>GeneratedZToSearch.back()){GeneratedZToSearch.push_back(i);
-    cout <<"CHECK"<<endl;}
-    for(Double_t i : GeneratedZToSearch){
-        for(unsigned j=0;j<GeneratedZ.size();j++){
-            if(GeneratedZ.at(j)==i)ResHist->Fill(GeneratedZ.at(j)-RecoZ.at(j));
-        }
-        ResVsZHist->Fill(i,ResHist->GetStdDev());
-        ResVsZHist->SetBinError((int)(i+16.5),ResHist->GetStdDevError());
-        ResHist->Reset();
-    }
-    ResVsZHist->DrawCopy();
+//     TH1D *ResHist = new TH1D("ResolutionHistogram","Risoluzione",100,-20,20);
+//     vector<Double_t>GeneratedZAux(GeneratedZ);
+//     vector<Double_t>GeneratedZToSearch;
+//     sort(GeneratedZAux.begin(),GeneratedZAux.end());
+//     GeneratedZToSearch.push_back(GeneratedZAux.at(0));
+//     for(Double_t i : GeneratedZAux) if(i>GeneratedZToSearch.back()){GeneratedZToSearch.push_back(i);
+//     cout <<"CHECK"<<endl;}
+//     for(Double_t i : GeneratedZToSearch){
+//         for(unsigned j=0;j<GeneratedZ.size();j++){
+//             if(GeneratedZ.at(j)==i)ResHist->Fill(GeneratedZ.at(j)-RecoZ.at(j));
+//         }
+//         ResVsZHist->Fill(i,ResHist->GetStdDev());
+//         ResVsZHist->SetBinError((int)(i+16.5),ResHist->GetStdDevError());
+//         ResHist->Reset();
+//     }
+//     ResVsZHist->DrawCopy();
     input_file->Close();
 }
 

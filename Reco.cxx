@@ -15,8 +15,8 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
     this->L2_radius = stod(configs.at(32).at(1));
     this->hist_min =  stod(configs.at(33).at(1));
     this->hist_max =  stod(configs.at(34).at(1));
-    hist_bin_number = 37*(hist_max - hist_min);
-    vertex_candidates->SetBins(hist_bin_number,hist_min,hist_max);
+    hist_bin_number = 2*(hist_max - hist_min);
+    vertex_candidates = new TH1D("vertex_candidates","vertex_candidates",hist_bin_number,hist_min,hist_max);
     this->input_tree = input_tree;
     //    this->L1_radius = 4.;    //test mode
     //    this->L2_radius = 7.;    //test mode
@@ -52,8 +52,8 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
     }
 //    TFile *oldfile = new TFile("FirstSimulation.root","UPDATE");
 //    TTree *input_tree = (TTree*)oldfile->Get("ppSimulation");
+    delete vertex_candidates;
 }
-
 
 void Reco::GetEventVertex(){
     //loop on L1 TClonesArray
@@ -66,25 +66,23 @@ void Reco::GetEventVertex(){
 
             // hit match 
             if (Abs(L2_candidate->GetPhi() - L1_candidate->GetPhi()) <= Pi()) dif = Abs(L2_candidate->GetPhi() - L1_candidate->GetPhi());
-            else dif = 2*Pi() - Abs(L2_candidate->GetPhi() - L1_candidate->GetPhi());
-            if (dif <= delta_phi){ 
+            else dif = 2*Pi() - Abs(L2_candidate->GetPhi()) - Abs(L1_candidate->GetPhi());
+            if (dif <= 2*delta_phi){
             intersection = GetIntersection(L1_candidate,L2_candidate);
             intersection_list[counter] = intersection; 
             counter++;
             vertex_candidates->Fill(intersection);
-            }
-            
+            }            
         }     
         
     }
-    
+
    //find maximum bin, maximum bin boundaries, second and third maximum bins
    //highest bin
    binmax = vertex_candidates->GetMaximumBin();    
-   my_bin_content = 0;
    my_bin_content = vertex_candidates->GetBinContent(binmax); 
-   z_min = vertex_candidates->GetBinLowEdge(binmax);
-   z_max = vertex_candidates->GetBinLowEdge(binmax+1);
+   z_min = vertex_candidates->GetBinLowEdge(binmax-1);
+   z_max = vertex_candidates->GetBinLowEdge(binmax+2);
    //left highest bin
    vertex_candidates->GetXaxis()->SetRange(0,binmax-1);  
    low_bin_content = vertex_candidates->GetBinContent(vertex_candidates->GetMaximumBin());
@@ -99,7 +97,7 @@ void Reco::GetEventVertex(){
    //condition to validate reconstruction ( maximum bin entries > 1.5 * second maximum bin entries)
 
    //reconstructed events
-   if (my_bin_content > 1.5*max(low_bin_content,high_bin_content)){
+   if ((my_bin_content >= 1.5*max(low_bin_content,high_bin_content))&&(my_bin_content>2)){
      is_reconstructed = kTRUE;
      //get highest bin z entries sum
      for (Int_t k = 0; k<=counter; k++){
@@ -124,7 +122,7 @@ void Reco::GetEventVertex(){
 }
 
 Double_t Reco::GetIntersection(Hit * L1_candidate, Hit * L2_candidate){
-    return (L1_radius*Cos(L1_candidate->GetPhi())*(L2_candidate->GetZ()-L1_candidate->GetZ()))/(L1_radius*Cos(L1_candidate->GetPhi())-L2_radius*Cos(L2_candidate->GetPhi())) + L1_candidate->GetZ();   
+    return ((L1_radius*L2_candidate->GetZ()-L2_radius*L1_candidate->GetZ())/(L1_radius-L2_radius));
 }
 
 Double_t Reco::DeltaPhiSampling(){
@@ -141,9 +139,9 @@ Double_t Reco::DeltaPhiSampling(){
 
             // hit match 
             if ((L2_candidate->GetLabel() == L1_candidate->GetLabel()) && L2_candidate->GetLabel() != -1){
-                if ((L2_candidate->GetPhi() - L1_candidate->GetPhi() < Pi())&& (L2_candidate->GetPhi() - L1_candidate->GetPhi() > -Pi() ) ) delta_phi_distribution->Fill(L2_candidate->GetPhi() - L1_candidate->GetPhi());
-                if (L2_candidate->GetPhi() - L1_candidate->GetPhi() > Pi()) delta_phi_distribution->Fill(2*Pi()-(L2_candidate->GetPhi() - L1_candidate->GetPhi())); 
-                if (L2_candidate->GetPhi() - L1_candidate->GetPhi() < -Pi()) delta_phi_distribution->Fill(-2*Pi()+(L2_candidate->GetPhi() - L1_candidate->GetPhi())); 
+                if (Abs(L2_candidate->GetPhi() - L1_candidate->GetPhi()) < Pi()) delta_phi_distribution->Fill((L2_candidate->GetPhi() - L1_candidate->GetPhi())); 
+                else if(L2_candidate->GetPhi()>L1_candidate->GetPhi()) delta_phi_distribution->Fill(2*Pi()-Abs(L2_candidate->GetPhi()) - Abs(L1_candidate->GetPhi()));
+                     else delta_phi_distribution->Fill(-(2*Pi()-Abs(L2_candidate->GetPhi()) - Abs(L1_candidate->GetPhi())));
             }        
             }   
         }
