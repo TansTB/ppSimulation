@@ -22,7 +22,7 @@ Tracks Input File: kinem.root ://:if custom
 Tracks Eta histogram name: heta ://:if custom
 //:Simulation Configuration
 Multiple Scattering: on ://:on,off
-Number of events to simulate: 10000
+Number of events to simulate: 10000000
 Output File Name: FirstSimulation.root
 Seed: 42
 //:Detector Geometry

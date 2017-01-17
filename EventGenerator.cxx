@@ -65,8 +65,10 @@ EventGenerator::EventGenerator(vector<vector<string> > configs,TTree *tree){
   this->zres_detector = stod(configs.at(35).at(1));
   this->rphires_detector = stod(configs.at(36).at(1));
   this->p = stod(configs.at(37).at(1));
-  this->BP_theta0 = Sqrt((BP_thickness)/BP_X0)*13.6*BP_Z*(1+0.038*Log(BP_thickness/BP_X0))/p;
-  this->L1_theta0 = Sqrt((L1_thickness)/L1_X0)*13.6*L1_Z*(1+0.038*Log(L1_thickness/L1_X0))/p;
+  this->BP_theta0 = Sqrt((BP_thickness)/BP_X0)*13.6*BP_Z*(1+0.038*Log(BP_thickness/BP_X0))/(p*1000);
+  this->L1_theta0 = Sqrt((L1_thickness)/L1_X0)*13.6*L1_Z*(1+0.038*Log(L1_thickness/L1_X0))/(p*1000);
+  cout << L1_theta0 <<endl;
+  
   
 //Tree Configuration
   tree->Branch("Vertex",&VTX);
