@@ -18,7 +18,7 @@ class TrackGenerator{
     const char* GetEtaInputHistName(){return eta_input_hist_name;}
     Track* GetUniformTrack();//Returns a track between thetamin and thetamax, 0<thetamin<thetamax<Pi
     void SetUniformTrack(Double_t thetamin,Double_t thetamax);
-    Track* GetCustomTrack();
+    Track* GetCustomTrack();//Returns a track with eta between -2 and 2, from the eta_input_hist
     void SetCustomTrack(const char* input_file_name, const char* eta_input_hist_name);
   private:
     TrackGenerator(TrackGenerator &other);

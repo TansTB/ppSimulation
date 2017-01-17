@@ -8,6 +8,7 @@ TrackGenerator::TrackGenerator(const char *input_file_name, const char* eta_inpu
   this->input_file = new TFile(input_file_name);
   this->eta_input_hist = (TH1D*) input_file->Get(eta_input_hist_name);
   this->eta_input_hist->SetDirectory(0);
+  for(Int_t i=0;i<eta_input_hist->GetSize();i++)if((eta_input_hist->GetBinCenter(i)<-2)||(eta_input_hist->GetBinCenter(i)>2))eta_input_hist->SetBinContent(i,0);
   this->input_file->Close();
   delete input_file;
   this->used_hist = kTRUE;
@@ -45,6 +46,7 @@ void TrackGenerator::SetCustomTrack(const char *input_file_name, const char* eta
   this->input_file = new TFile(input_file_name);
   this->eta_input_hist = (TH1D*) input_file->Get(eta_input_hist_name);
   this->eta_input_hist->SetDirectory(0);
+  for(Int_t i=0;i<eta_input_hist->GetSize();i++)if((eta_input_hist->GetBinCenter(i)<-2)||(eta_input_hist->GetBinCenter(i)>2))eta_input_hist->SetBinContent(i,0);
   this->input_file->Close();
   delete input_file;
   this->used_hist = kTRUE;
