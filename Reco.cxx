@@ -13,8 +13,8 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
     //configuration
     this->L1_radius = stod(configs.at(28).at(1));
     this->L2_radius = stod(configs.at(32).at(1));
-    this->hist_min =  stod(configs.at(33).at(1));
-    this->hist_max =  stod(configs.at(34).at(1));
+    this->hist_min =  2*stod(configs.at(33).at(1));
+    this->hist_max =  2*stod(configs.at(34).at(1));
     hist_bin_number = 2*(hist_max - hist_min);
     vertex_candidates = new TH1D("vertex_candidates","vertex_candidates",hist_bin_number,hist_min,hist_max);
     this->input_tree = input_tree;
@@ -54,7 +54,7 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
 //    TTree *input_tree = (TTree*)oldfile->Get("ppSimulation");
     delete vertex_candidates;
 }
-
+    
 void Reco::GetEventVertex(){
     //loop on L1 TClonesArray
     for(Int_t j=0;j<ptr_L1_hits->GetEntries();j++){ 
@@ -67,7 +67,7 @@ void Reco::GetEventVertex(){
             // hit match 
             if (Abs(L2_candidate->GetPhi() - L1_candidate->GetPhi()) <= Pi()) dif = Abs(L2_candidate->GetPhi() - L1_candidate->GetPhi());
             else dif = 2*Pi() - Abs(L2_candidate->GetPhi()) - Abs(L1_candidate->GetPhi());
-            if (dif <= 2*delta_phi){
+            if (dif <= 6*delta_phi){
             intersection = GetIntersection(L1_candidate,L2_candidate);
             intersection_list[counter] = intersection; 
             counter++;
@@ -76,18 +76,19 @@ void Reco::GetEventVertex(){
         }     
         
     }
+//     cout <<endl<<endl;
 
    //find maximum bin, maximum bin boundaries, second and third maximum bins
    //highest bin
    binmax = vertex_candidates->GetMaximumBin();    
-   my_bin_content = vertex_candidates->GetBinContent(binmax); 
+   my_bin_content = vertex_candidates->GetBinContent(binmax)+vertex_candidates->GetBinContent(binmax-1)+vertex_candidates->GetBinContent(binmax+1); 
    z_min = vertex_candidates->GetBinLowEdge(binmax-1);
    z_max = vertex_candidates->GetBinLowEdge(binmax+2);
    //left highest bin
-   vertex_candidates->GetXaxis()->SetRange(0,binmax-1);  
+   vertex_candidates->GetXaxis()->SetRange(0,binmax-4);  
    low_bin_content = vertex_candidates->GetBinContent(vertex_candidates->GetMaximumBin());
    //right highest bin 
-   vertex_candidates->GetXaxis()->SetRange(binmax+1,hist_bin_number-1);
+   vertex_candidates->GetXaxis()->SetRange(binmax+4,hist_bin_number-1);
    high_bin_content = vertex_candidates->GetBinContent(vertex_candidates->GetMaximumBin());
    //set range back to original size  
    vertex_candidates->GetXaxis()->SetRange(0,hist_bin_number-1);                                        
@@ -95,15 +96,17 @@ void Reco::GetEventVertex(){
    bin_entries = 0;
    
    //condition to validate reconstruction ( maximum bin entries > 1.5 * second maximum bin entries)
-
+//     TCanvas *c1 = new TCanvas("c1","c1");
+//     vertex_candidates->DrawCopy();
+//     c1->SaveAs("dummy.png");
    //reconstructed events
-   if ((my_bin_content >= 1.5*max(low_bin_content,high_bin_content))&&(my_bin_content>2)){
+   if ((vertex_candidates->GetBinContent(binmax) >= 1.2*max(low_bin_content,high_bin_content))&&(my_bin_content>=2)){
      is_reconstructed = kTRUE;
      //get highest bin z entries sum
      for (Int_t k = 0; k<=counter; k++){
        if(intersection_list[k] >= z_min && intersection_list[k] <= z_max){ 
        z_sum += intersection_list[k];
-       bin_entries++;      
+       bin_entries++;
        }     
      }
      //vertex_candidates->DrawCopy();

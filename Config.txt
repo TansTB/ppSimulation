@@ -1,7 +1,7 @@
 //:ppSimulation Configuration File
 //:Event Configuration
 Vertex Distribution: gaussian://:constant,gaussian,uniform,custom
-Vertex x,y,z: 0:0:0.5://:if constant (cm)
+Vertex x,y,z: 0:0:0://:if constant (cm)
 Vertex meanx,sigmax,meany,sigmay,meanz,sigmaz: 0:0.01:0:0.01:0:5.3 ://:if gaussian (cm)
 Vertex xmin,xmax,ymin,ymax,zmin,zmax : xmin_value:xmax_value:ymin_value:ymax_value:zmin_value:zmax_value ://:if uniform (cm)
 Vertex x Input File: x_input_file_name ://:if custom
@@ -11,7 +11,7 @@ Vertex x histogram name: x_hist_name ://:if custom
 Vertex y histogram name: y_hist_name ://:if custom
 Vertex z histogram name: z_hist_name ://:if custom
 Multiplicity Distribution: custom ://:constant,gaussian,uniform,custom
-Multiplicity Value: 20 ://:if constant
+Multiplicity Value: 2://:if constant
 Multiplicity mean,sigma: mean_value:sigma_value ://:if gaussian
 Multiplicity min,max: minvalue:maxvalue ://:if uniform
 Multiplicity Input File: kinem.root ://:if custom
@@ -21,7 +21,7 @@ Tracks thetamin,thetamax: 0.5 : 2.7 ://:if uniform
 Tracks Input File: kinem.root ://:if custom
 Tracks Eta histogram name: heta ://:if custom
 //:Simulation Configuration
-Multiple Scattering: off ://:on,off
+Multiple Scattering: on ://:on,off
 Number of events to simulate: 100000
 Output File Name: FirstSimulation.root
 Seed: 42
@@ -35,18 +35,18 @@ Layer 1 Detector Thickness: 0.02://:(cm)
 Layer 1 Detector Material X0: 9.37://:(cm)
 Layer 1 Material Z: 14
 Layer 2 Detector Radius: 7://:(cm)
-Detectors Lower Z: -13.5://:Supposed to be symmetric(cm)
-Detectors Upper Z: 13.5://:Supposed to be symmetric(cm)
+Detectors Lower Z: -13.5://:(cm)
+Detectors Upper Z: 13.5://:(cm)
 Detectors Z Resolution: 0.012://:(cm)
 Detectors rPhi Resolution: 0.003://:(cm)
 //:Particle Information
 Momentum: 1000 ://:(MeV/c)
-//:Noise Configuration
+//:Noise Configuration  
 Noise Entries Distribution: constant ://:constant,custom
 Noise Entries: 10 ://:if constant
 Noise Entries Input File: input_file_name ://:if custom
 Noise Entries Histogram name: hist_name ://:if custom
-Is Noise: false ://:true,false
+Is Noise: true ://:true,false
 //:Reco Configuration
 Estimate delta_phi: yes ://:yes,no
-DeltaPhi: 0.006 ://std deviation of the delta_phi distribution
+DeltaPhi: 0.002 ://std deviation of the delta_phi distribution

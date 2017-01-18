@@ -21,7 +21,7 @@ void Track::SetComp(){
 
 void Track::Print(){
    cout << "*********************************************************" << endl;
-   cout << "Theta       " << Track::GetTheta() << endl <<"Phi         " << Track::GetPhi() << endl << "Componenti "; 
+   cout << "Theta       " << this->theta << endl <<"Phi         " << this->phi << "Componenti "; 
    for (Int_t i=0; i<3; i++) {cout << comp[i] << "  ";}
    cout << endl << "*********************************************************" << endl;
 }
@@ -54,13 +54,17 @@ void Track::Rotate(Double_t theta_p, Double_t phi_p){
    }
 
    // angle update (theta)
-   Double_t theta_new = ATan(Sqrt(Power(comp[0],2)+Power(comp[1],2))/comp[3]);
-   Double_t theta_sum = (theta_new>0) ? theta_new:Pi()+theta_new;
-   Track::SetTheta(theta_sum);
-
+  this->theta=ACos(comp[2]);
+   
    //angle update (phi)
-   Double_t phi_new = ATan(comp[1]/comp[0]);
-   Track::SetPhi(phi_new);
+  if(comp[0]>0)this->phi=ATan(comp[1]/comp[0]);
+  else{
+      if(comp[1]>0)this->phi=Pi()+ATan(comp[1]/comp[0]);
+      else this->phi=-Pi()+ATan(comp[1]/comp[0]);
+  }
+  if (comp[0]==0){if(comp[1]>0)this->phi=Pi()/2;
+            else this->phi=-Pi()/2;
+           }
 }
 
 

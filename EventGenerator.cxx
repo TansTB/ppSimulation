@@ -143,34 +143,40 @@ void EventGenerator::NewEvent(){
     }
     break;
   } 
-  
+
   //Calculating Hits
-    Int_t c1=0,c2=0,c3=0;
+    Int_t c1=0,c2=0,c3=0,aux=0;
   for (Int_t label=0;label<multiplicity;label++){
-    if(Intersection(VTX,(Track*)tracks.At(label),BP_radius,intersection)){
+      aux = Intersection(VTX,(Track*)tracks.At(label),BP_radius,intersection);
+//       cout << "Track: " <<((Track*)tracks.At(label))->GetPhi();
       intersection->SetLabel(label);
       intersection_recorded->SetLabel(label);
       new(BP_hits[c1]) Hit(*intersection);
       if(is_scattering) MultipleScattering((Track*)tracks.At(label),BP_theta0);
-      if(Intersection((Hit*)BP_hits.At(c1),1,(Track*)tracks.At(label),L1_radius,intersection)){
+      if(Intersection((Hit*)BP_hits.At(c1),0,(Track*)tracks.At(label),L1_radius,intersection)){
         intersection_recorded->SetZ(gRandom->Gaus(intersection->GetZ(),zres_detector));
         intersection_recorded->SetPhi(gRandom->Gaus(intersection->GetPhi(),rphires_detector/L1_radius));
+//         cout << "\tL1 " << intersection->GetPhi();
         new(L1_hits[c2]) Hit(*intersection);
         new(L1_hits_recorded[c2]) Hit(*intersection_recorded);
         if(is_scattering) MultipleScattering((Track*)tracks.At(label),L1_theta0);
-        if(Intersection((Hit*)L1_hits.At(c2),2,(Track*)tracks.At(label),L2_radius,intersection)){
+        if(Intersection((Hit*)L1_hits.At(c2),1,(Track*)tracks.At(label),L2_radius,intersection)){
+//             cout << "\tL2 " << intersection->GetPhi();
             intersection_recorded->SetZ(gRandom->Gaus(intersection->GetZ(),zres_detector));
             intersection_recorded->SetPhi(gRandom->Gaus(intersection->GetPhi(),rphires_detector/L2_radius));
             new(L2_hits[c3]) Hit(*intersection);
             new(L2_hits_recorded[c3]) Hit(*intersection_recorded);
             c3++;
+//             cout << "gotcha"<<endl;
         }
+//         else cout << "missed2L" <<endl;
         c2++;
       }
+//       else cout <<"missed1L"<<endl;
       c1++;
-    }
+//       cout<<endl;
   }
-      
+
   //Add noise
   if (is_noise){
   this->n.SetParameters(zmin_detector,zmax_detector,multiplicity);
@@ -194,7 +200,14 @@ Bool_t EventGenerator::Intersection(Point* vertex,Track* track,Double_t radius,H
   x = (vertex->GetX())+t*Sin(track->GetTheta())*Cos(track->GetPhi());
   y = (vertex->GetY())+t*Sin(track->GetTheta())*Sin(track->GetPhi());
   z = (vertex->GetZ())+t*Cos(track->GetTheta());
-  intersection->SetPhi(ATan(y/x));
+  if(x>0)intersection->SetPhi(ATan(y/x));
+  else{
+      if(y>0)intersection->SetPhi(Pi()+ATan(y/x));
+      else intersection->SetPhi(-Pi()+ATan(y/x));
+  }
+  if (x==0){if(y>0)intersection->SetPhi(Pi()/2);
+            else intersection->SetPhi(-Pi()/2);
+           }
   intersection->SetZ(z);
   if((zmin_detector<z)&&(z<zmax_detector))return kTRUE;
   else return kFALSE;
