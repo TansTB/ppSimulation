@@ -20,7 +20,7 @@ public:
    Noise(Int_t entries); 
    ~Noise();
   
-  void SetParameters (Double_t zmin_detector, Double_t zmax_detector, Int_t multiplicity);
+  void SetParameters (Double_t zmin_detector, Double_t zmax_detector);
   Hit* GetUniformHits();                          //single hit generation (uniform distribution)
   void SetConstantEntriesNumber(Int_t entries);  //if constant, set entries number
   void SetCustomEntriesNumber(const char* input_file_name, const char* input_hist_name);  //if custom, set entries number
@@ -32,7 +32,6 @@ public:
 
   //General Parameters
   Int_t entries;
-  Int_t multiplicity = 0;                 
   Double_t zmin_detector,zmax_detector;
   Hit *hit = new Hit(-1,0,0);                    //noise hits are labelled -1
 

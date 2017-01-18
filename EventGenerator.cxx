@@ -67,7 +67,7 @@ EventGenerator::EventGenerator(vector<vector<string> > configs,TTree *tree){
   this->p = stod(configs.at(37).at(1));
   this->BP_theta0 = Sqrt((BP_thickness)/BP_X0)*13.6*BP_Z*(1+0.038*Log(BP_thickness/BP_X0))/p;
   this->L1_theta0 = Sqrt((L1_thickness)/L1_X0)*13.6*L1_Z*(1+0.038*Log(L1_thickness/L1_X0))/p;
-  cout << L1_theta0 <<endl;
+//   cout << L1_theta0 <<endl;
   
   
 //Tree Configuration
@@ -179,7 +179,7 @@ void EventGenerator::NewEvent(){
 
   //Add noise
   if (is_noise){
-  this->n.SetParameters(zmin_detector,zmax_detector,multiplicity);
+  this->n.SetParameters(zmin_detector,zmax_detector);
   this->n.NewNoise(ptr_L1_hits_recorded);
   this->n.NewNoise(ptr_L2_hits_recorded);
   }

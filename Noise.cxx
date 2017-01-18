@@ -14,10 +14,9 @@ Noise::~Noise(){
   delete hit;
 }
 
-void Noise::SetParameters(Double_t zmin_detector, Double_t zmax_detector, Int_t multiplicity){
+void Noise::SetParameters(Double_t zmin_detector, Double_t zmax_detector){
   this->zmin_detector = zmin_detector;
   this->zmax_detector = zmax_detector;
-  this->multiplicity = multiplicity;
 }
 
 void Noise::NewNoise(TClonesArray *ptr_noise){

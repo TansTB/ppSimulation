@@ -6,15 +6,15 @@ using namespace TMath;
 Reco::Reco(vector<vector<string> > configs,TTree *input_tree){ 
 // Reco::Reco(Int_t t){ 
 
-   //test mode (opens tree from file)
+//test mode (opens tree from file)
     //    TFile *oldfile = new TFile("FirstSimulation.root","UPDATE");
     //    TTree *input_tree = (TTree*)oldfile->Get("ppSimulation");
 
     //configuration
     this->L1_radius = stod(configs.at(28).at(1));
     this->L2_radius = stod(configs.at(32).at(1));
-    this->hist_min =  2*stod(configs.at(33).at(1));
-    this->hist_max =  2*stod(configs.at(34).at(1));
+    this->hist_min =  4*stod(configs.at(33).at(1));
+    this->hist_max =  4*stod(configs.at(34).at(1));
     hist_bin_number = 2*(hist_max - hist_min);
     vertex_candidates = new TH1D("vertex_candidates","vertex_candidates",hist_bin_number,hist_min,hist_max);
     this->input_tree = input_tree;
@@ -42,13 +42,12 @@ Reco::Reco(vector<vector<string> > configs,TTree *input_tree){
         input_tree->GetEvent(i);
         //vertex is calculated for event i
         GetEventVertex();
-    //       if (i<50) cout << endl <<"Check. For event " << i << " the vertex for this event is " << vertex_z << " is reconstructed? " << is_reconstructed << endl;
-
+        
         //fill new branches
         if (!is_reconstructed) vertex_z = -999999;
         newBranch->Fill();
         newBranch2->Fill();
-        if(i%100==99) cout <<  i+1 << " reconstructed events..." << endl;
+        if(i%1000==999) cout <<  i+1 << " reconstructed events..." << endl;
     }
 //    TFile *oldfile = new TFile("FirstSimulation.root","UPDATE");
 //    TTree *input_tree = (TTree*)oldfile->Get("ppSimulation");
@@ -67,60 +66,69 @@ void Reco::GetEventVertex(){
             // hit match 
             if (Abs(L2_candidate->GetPhi() - L1_candidate->GetPhi()) <= Pi()) dif = Abs(L2_candidate->GetPhi() - L1_candidate->GetPhi());
             else dif = 2*Pi() - Abs(L2_candidate->GetPhi()) - Abs(L1_candidate->GetPhi());
-            if (dif <= 6*delta_phi){
+            if (dif <= 2*delta_phi){
             intersection = GetIntersection(L1_candidate,L2_candidate);
             intersection_list[counter] = intersection; 
             counter++;
             vertex_candidates->Fill(intersection);
             }            
         }     
-        
     }
 //     cout <<endl<<endl;
 
-   //find maximum bin, maximum bin boundaries, second and third maximum bins
-   //highest bin
-   binmax = vertex_candidates->GetMaximumBin();    
-   my_bin_content = vertex_candidates->GetBinContent(binmax)+vertex_candidates->GetBinContent(binmax-1)+vertex_candidates->GetBinContent(binmax+1); 
-   z_min = vertex_candidates->GetBinLowEdge(binmax-1);
-   z_max = vertex_candidates->GetBinLowEdge(binmax+2);
-   //left highest bin
-   vertex_candidates->GetXaxis()->SetRange(0,binmax-4);  
-   low_bin_content = vertex_candidates->GetBinContent(vertex_candidates->GetMaximumBin());
-   //right highest bin 
-   vertex_candidates->GetXaxis()->SetRange(binmax+4,hist_bin_number-1);
-   high_bin_content = vertex_candidates->GetBinContent(vertex_candidates->GetMaximumBin());
-   //set range back to original size  
-   vertex_candidates->GetXaxis()->SetRange(0,hist_bin_number-1);                                        
-   z_sum = 0;
-   bin_entries = 0;
-   
-   //condition to validate reconstruction ( maximum bin entries > 1.5 * second maximum bin entries)
+//find maximum bin, maximum bin boundaries, second and third maximum bins
+//highest bin
+    binmax = vertex_candidates->GetMaximumBin();    
+    my_bin_content = vertex_candidates->GetBinContent(binmax)+vertex_candidates->GetBinContent(binmax-1)+vertex_candidates->GetBinContent(binmax+1);//my_bin_content is the content of the maximum and the 2 bins
+                                                                                                                                                    //next to it
+    z_min = vertex_candidates->GetBinLowEdge(binmax);
+    z_max = vertex_candidates->GetBinLowEdge(binmax+1);
+
+    //second maximum bin calculation
+    vertex_candidates->GetXaxis()->SetRange(0,binmax-2);
+    sbinmax=vertex_candidates->GetMaximumBin();//second maximum bin is the left one by default
+    sbin_content = vertex_candidates->GetBinContent(sbinmax);
+    vertex_candidates->GetXaxis()->SetRange(binmax+2,hist_bin_number-1);
+    if(vertex_candidates->GetBinContent(vertex_candidates->GetMaximumBin())>vertex_candidates->GetBinContent(sbinmax))sbinmax=vertex_candidates->GetMaximumBin();//if true, sbinmax is the right one
+    sbin_content = vertex_candidates->GetBinContent(sbinmax)+vertex_candidates->GetBinContent(sbinmax+1)+vertex_candidates->GetBinContent(sbinmax-1);//sbin_content is the sum of the contents of the bins next to the sbinmax and sbinmax
+
+    //set range back to original size
+    vertex_candidates->GetXaxis()->SetRange(0,hist_bin_number-1);                                        
+    z_sum = 0;
+    bin_entries = 0;
+
+//condition to validate reconstruction ( maximum bin entries > 1.5 * second maximum bin entries)
 //     TCanvas *c1 = new TCanvas("c1","c1");
 //     vertex_candidates->DrawCopy();
 //     c1->SaveAs("dummy.png");
-   //reconstructed events
-   if ((vertex_candidates->GetBinContent(binmax) >= 1.2*max(low_bin_content,high_bin_content))&&(my_bin_content>=2)){
-     is_reconstructed = kTRUE;
-     //get highest bin z entries sum
-     for (Int_t k = 0; k<=counter; k++){
-       if(intersection_list[k] >= z_min && intersection_list[k] <= z_max){ 
-       z_sum += intersection_list[k];
-       bin_entries++;
-       }     
-     }
-     //vertex_candidates->DrawCopy();
-     counter = 0;
-     vertex_candidates->Reset();     //rest z candidates histogram
-     vertex_z = z_sum / (bin_entries);   //return vertex z average  
-   }
+//     cout <<binmax<< "\t"<<vertex_candidates->GetBinContent(binmax)<<"\t"<<my_bin_content<<"\t" <<sbinmax<< "\t"<< vertex_candidates->GetBinContent(sbinmax)<<"\t" << sbin_content <<  endl;
+    //reconstructed events
+    if(my_bin_content==1)is_reconstructed=kFALSE;
+    if(my_bin_content==2){
+        if(vertex_candidates->GetBinContent(binmax)==1)is_reconstructed = kFALSE;
+        else is_reconstructed = my_bin_content > 2*sbin_content;
+    }
+    else if(my_bin_content>2){is_reconstructed = my_bin_content/10 >= sbin_content;}
 
-   //not recostructed events
-   else {
-     is_reconstructed = kFALSE;
-     counter = 0;                   
-     vertex_candidates->Reset();    //rest z candidates histogram
-   }	
+    if (is_reconstructed){
+        //get highest bin z entries sum
+        for (Int_t k = 0; k<=counter; k++){
+        if(intersection_list[k] >= z_min && intersection_list[k] <= z_max){ 
+        z_sum += intersection_list[k];
+        bin_entries++;
+        }     
+        }
+        //vertex_candidates->DrawCopy();
+        counter = 0;
+        vertex_candidates->Reset();     //rest z candidates histogram
+        vertex_z = z_sum / (bin_entries);   //return vertex z average  
+    }
+
+    //not recostructed events
+    else {
+        counter = 0;                   
+        vertex_candidates->Reset();    //rest z candidates histogram
+    }	
 
 }
 
@@ -144,7 +152,7 @@ Double_t Reco::DeltaPhiSampling(){
             if ((L2_candidate->GetLabel() == L1_candidate->GetLabel()) && L2_candidate->GetLabel() != -1){
                 if (Abs(L2_candidate->GetPhi() - L1_candidate->GetPhi()) < Pi()) delta_phi_distribution->Fill((L2_candidate->GetPhi() - L1_candidate->GetPhi())); 
                 else if(L2_candidate->GetPhi()>L1_candidate->GetPhi()) delta_phi_distribution->Fill(2*Pi()-Abs(L2_candidate->GetPhi()) - Abs(L1_candidate->GetPhi()));
-                     else delta_phi_distribution->Fill(-(2*Pi()-Abs(L2_candidate->GetPhi()) - Abs(L1_candidate->GetPhi())));
+                    else delta_phi_distribution->Fill(-(2*Pi()-Abs(L2_candidate->GetPhi()) - Abs(L1_candidate->GetPhi())));
             }        
             }   
         }

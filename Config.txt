@@ -48,5 +48,5 @@ Noise Entries Input File: input_file_name ://:if custom
 Noise Entries Histogram name: hist_name ://:if custom
 Is Noise: true ://:true,false
 //:Reco Configuration
-Estimate delta_phi: yes ://:yes,no
-DeltaPhi: 0.002 ://std deviation of the delta_phi distribution
+Estimate delta_phi: no ://:yes,no
+DeltaPhi: 0.00225 ://std deviation of the delta_phi distribution

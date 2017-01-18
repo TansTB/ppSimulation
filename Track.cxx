@@ -11,7 +11,10 @@ Track::Track(Double_t theta, Double_t phi){
 
 void Track::SetTheta(Double_t theta){this->theta = theta;}
 
-void Track::SetPhi(Double_t phi){this->phi = phi;}
+void Track::SetPhi(Double_t phi){
+    while(phi>Pi())phi-=2*Pi();
+    while(phi<-Pi())phi+=2*Pi();
+    this->phi = phi;}
 
 void Track::SetComp(){
    comp[0]= Sin(theta)*Cos(phi);

@@ -44,8 +44,8 @@ public:
   Double_t vertex_z = 0;
   Double_t z_min, z_max, z_sum;
   Double_t bin_entries = 0;
-  Int_t binmax;
-  Double_t my_bin_content, low_bin_content, high_bin_content;
+  Int_t binmax,sbinmax;
+  Double_t my_bin_content, sbin_content;
   Double_t L1_radius;
   Double_t L2_radius; 
   Double_t dif;

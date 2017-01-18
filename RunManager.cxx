@@ -29,23 +29,26 @@ int RunManager(char *config_file){
   for(Int_t i=0;i<stod(v.at(21).at(1));i++){
 //     cout << "Event " << i<< endl;
     EG.NewEvent();  
-    if(i%100==99) cout <<  i+1 << " generated events..." << endl;
+    if(i%1000==999) cout <<  i+1 << " generated events..." << endl;
   }
   sim_watch->Stop();
   cout << "Simulation completed" << endl;
-  sim_watch->Print("u");
   cout << "Starting reconstruction.." << endl;
-  sim_watch->Reset();
-  sim_watch->Start();
+  TStopwatch* reco_watch = new TStopwatch();
   Reco Reconstruction(v,tree);
-  sim_watch->Stop();
-  cout << "Reconstruction completed" << endl;
-  sim_watch->Print("u");
+  reco_watch->Stop();
   tree->Write();
   delete tree;
   cout << "Closing Output File: " << output_file->GetName() << endl;
   output_file->Close();
+  cout << "Reconstruction completed" << endl;
+  cout << "************SIMULATION PERFORMANCE************" <<endl;
+  sim_watch->Print("u");
+  cout << "**********RECONSTRUCTION PERFORMANCE**********" <<endl;
+  reco_watch->Print("u");
   delete output_file;
+  delete sim_watch;
+  delete reco_watch;
   return 0;
 }
 
