@@ -43,7 +43,7 @@ Detectors rPhi Resolution: 0.003://:(cm)
 Momentum: 1000 ://:(MeV/c)
 //:Noise Configuration  
 Noise Entries Distribution: constant ://:constant,custom
-Noise Entries: 10 ://:if constant
+Noise Entries: 50 ://:if constant
 Noise Entries Input File: input_file_name ://:if custom
 Noise Entries Histogram name: hist_name ://:if custom
 Is Noise: true ://:true,false

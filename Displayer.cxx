@@ -9,7 +9,7 @@
 #include "Hit.h"
 #include "TMath.h"
 #include "TPad.h"
-#include "TROOT.h"
+#include "TCanvas.h"
 #include <algorithm>
 #include <vector>
 #include <string>
@@ -22,27 +22,28 @@ using namespace TMath;
 void ResolutionHistogram(string input_file_name){
     TFile *input_file = new TFile(input_file_name.c_str());
     TTree *input_tree = (TTree*)input_file->Get("ppSimulation");
-    input_tree->Draw("z-RecoVertexZ","is_reconstructed");
-    TH1F *ResHist = (TH1F*)gPad->GetPrimitive("htemp");
-//         Point VTX;
-//     Point *VTX_ptr=&VTX;
-//     Double_t RecoVTX_Z;
-//     Bool_t isReconstructed;
-//     TBranch *b1=input_tree->GetBranch("Vertex");
-//     b1->SetAddress(&VTX_ptr);
-//     TBranch *b2=input_tree->GetBranch("RecoVertexZ");
-//     b2->SetAddress(&RecoVTX_Z);
-//     TBranch *b3=input_tree->GetBranch("is_reconstructed");
-//     b3->SetAddress(&isReconstructed);
-//         TH1D *ResVsZHist = new TH1D("ResolutionVsZHistogram","Risoluzione vs Z generata;Z (cm);Risoluzione (cm)",33,-20,25);
-//     for (Int_t i=0;i<input_tree->GetEntries();i++){
-//         input_tree->GetEvent(i);
+    Point VTX;
+    Point *VTX_ptr=&VTX;
+    Double_t RecoVTX_Z;
+    Bool_t isReconstructed;
+    TBranch *b1=input_tree->GetBranch("Vertex");
+    b1->SetAddress(&VTX_ptr);
+    TBranch *b2=input_tree->GetBranch("RecoVertexZ");
+    b2->SetAddress(&RecoVTX_Z);
+    TBranch *b3=input_tree->GetBranch("is_reconstructed");
+    b3->SetAddress(&isReconstructed);
+    TCanvas *c1 = new TCanvas("c1","Resolution Histogram");
+    TH1D *ResHist = new TH1D("Resolution","Resolution;#DeltaZ (cm)",75,-0.25,0.25);
+    ResHist->SetDirectory(0);
+    for (Int_t i=0;i<input_tree->GetEntries();i++){
+        input_tree->GetEvent(i);
+        if(isReconstructed)ResHist->Fill(VTX.GetZ()-RecoVTX_Z);
 //         cout << VTX.GetZ()<<"\t"<<RecoVTX_Z<<endl;
-//         if(isReconstructed)ResVsZHist->Fill(VTX.GetZ()-RecoVTX_Z);
 //         if (((VTX.GetZ()-RecoVTX_Z) < -2)&&isReconstructed) cout << i << endl;
-//     }
-//     ResVsZHist->DrawCopy();
+    }
+    ResHist->Draw();
     input_file->Close();
+    delete input_file;
 }
 
 //Function to print the resolution vs generated Z histogram (must be run on a file created with a custom vertex distribution between -16 and 16, giving discrete verteces with equal probabilities)
