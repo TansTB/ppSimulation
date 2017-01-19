@@ -14,29 +14,29 @@ E'possibile compilare il programma per mezzo di un makefile e lanciarlo direttam
 
 make
 
-./ppSimulation <b>ConfigFile</b>     (sostituire ConfigFile con il nome del file di configurazione da utilizzare)
+./ppSimulation <b>ConfigFile</b>     (sostituire <b>ConfigFile</b> con il nome del file di configurazione da utilizzare)
 
 In alternativa il programma può essere compilato e lanciato direttamente da Root:
 
 .x ppSimulationCompiler.C
 
-ppSimulation("ConfigFile")
+ppSimulation("<b>ConfigFile</b>")
 
-L'output della simulazione (OutputFile) è un file ".root", il quale può essere letto da un'apposita macro (Displayer.cxx) che consente di visualizzare i risultati della simulazione:
+L'output della simulazione (<b>OutputFile</b>) è un file ".root", il quale può essere letto da un'apposita macro (Displayer.cxx) che consente di visualizzare i risultati della simulazione:
 
 .x DisplayerCompiler.C 
 
-ResolutionHistogram("OutputFile")                 
+ResolutionHistogram("<b>OutputFile</b>")                 
 
-ResolutionVsGeneratedZHistogram("OutputFile")      
+ResolutionVsGeneratedZHistogram("<b>OutputFile</b>")      
 
-ResolutionVsMultiplicityHistogram("OutputFile",Int_t numero_bin_istogramma)
+ResolutionVsMultiplicityHistogram("<b>OutputFile</b>",Int_t numero_bin_istogramma)
 
-EfficiencyVsMultiplicityHistogram("OutputFile")
+EfficiencyVsMultiplicityHistogram("<b>OutputFile</b>")
 
-EfficiencyVsMultiplicityHistogram1Sigma("OutputFile")
+EfficiencyVsMultiplicityHistogram1Sigma("<b>OutputFile</b>")
 
-EfficiencyVsNoiseHistogram("OutputFile")
+EfficiencyVsNoiseHistogram("<b>OutputFile</b>")
 
 In allegato sono presenti in formato pdf i plot da noi generati.
 
