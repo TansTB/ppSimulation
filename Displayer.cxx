@@ -47,7 +47,7 @@ void ResolutionHistogram(string input_file_name){
 }
 
 //Function to print the resolution vs generated Z histogram (must be run on a file created with a custom vertex distribution between -16 and 16, giving discrete verteces with equal probabilities)
-void ResolutionVsGeneratedZHistogram(string input_file_name){
+void ResolutionVsGeneratedZHistogram(string input_file_name,Int_t bins){
     TFile *input_file = new TFile(input_file_name.c_str());
     TTree *input_tree = (TTree*)input_file->Get("ppSimulation");
     Point VTX;
@@ -57,7 +57,6 @@ void ResolutionVsGeneratedZHistogram(string input_file_name){
     vector<Double_t>GeneratedZ;
     vector<Double_t>RecoZ;
     Double_t errors[33];
-    TH1D *ResVsZHist = new TH1D("ResolutionVsZHistogram","Risoluzione vs Z generata;Z (cm);Risoluzione (cm)",33,-16.5,16.5);
     TBranch *b1=input_tree->GetBranch("Vertex");
     b1->SetAddress(&VTX_ptr);
     TBranch *b2=input_tree->GetBranch("RecoVertexZ");
@@ -66,29 +65,40 @@ void ResolutionVsGeneratedZHistogram(string input_file_name){
     b3->SetAddress(&isReconstructed);
     for (Int_t i=0;i<input_tree->GetEntries();i++){
         input_tree->GetEvent(i);
-        if (isReconstructed==kTRUE) {
-            cout<<"CHECK "<< i<<" " << isReconstructed<<" "<< VTX.GetZ()<<endl;
-//             GeneratedZ.push_back(VTX.GetZ());
-//             RecoZ.push_back(RecoVTX_Z); 
+        if (isReconstructed){
+            GeneratedZ.push_back(VTX.GetZ());
+            RecoZ.push_back(RecoVTX_Z); 
         }   
     }
-//     TH1D *ResHist = new TH1D("ResolutionHistogram","Risoluzione",100,-20,20);
-//     vector<Double_t>GeneratedZAux(GeneratedZ);
-//     vector<Double_t>GeneratedZToSearch;
-//     sort(GeneratedZAux.begin(),GeneratedZAux.end());
-//     GeneratedZToSearch.push_back(GeneratedZAux.at(0));
-//     for(Double_t i : GeneratedZAux) if(i>GeneratedZToSearch.back()){GeneratedZToSearch.push_back(i);
-//     cout <<"CHECK"<<endl;}
-//     for(Double_t i : GeneratedZToSearch){
-//         for(unsigned j=0;j<GeneratedZ.size();j++){
-//             if(GeneratedZ.at(j)==i)ResHist->Fill(GeneratedZ.at(j)-RecoZ.at(j));
-//         }
-//         ResVsZHist->Fill(i,ResHist->GetStdDev());
-//         ResVsZHist->SetBinError((int)(i+16.5),ResHist->GetStdDevError());
-//         ResHist->Reset();
-//     }
-//     ResVsZHist->DrawCopy();
+    TH1D *ResHist = new TH1D("ResolutionHistogram","Risoluzione",75,-0.25,0.25);
+    vector<Double_t>GeneratedZAux(GeneratedZ);
+    sort(GeneratedZAux.begin(),GeneratedZAux.end());
+    Double_t binsize = (GeneratedZAux.back()-GeneratedZAux.front())/bins;
+    TCanvas *c1 = new TCanvas("c1","Resolution Vs Z Histogram");
+    TH1D *ResVsZHist = new TH1D("ResolutionVsZHistogram","Resolution vs Generated Z;Z (cm);Resolution (cm)",bins,GeneratedZAux.front(),GeneratedZAux.back());
+    ResVsZHist->SetDirectory(0);
+    for (Int_t i=1;i<=bins;i++){
+            Int_t counter=0;
+        for(unsigned j=0;j<GeneratedZ.size();j++){
+            if(GeneratedZ.at(j)>=GeneratedZAux.front()+binsize*(i-1) && GeneratedZ.at(j)<GeneratedZAux.front()+binsize*(i)){
+                ResHist->Fill(GeneratedZ.at(j)-RecoZ.at(j));
+                counter++;
+            }
+        }
+//             cout << i<< "\t"<<counter<< endl;
+        ResVsZHist->SetBinContent(i,ResHist->GetStdDev());
+//                 cout <<GeneratedZAux.front()+binsize/2+binsize*i<<"\t"<<ResHist->GetStdDev()<<"\t";
+        ResVsZHist->SetBinError(i,ResHist->GetStdDevError());
+//         cout << ResHist->GetStdDevError() << endl;
+        ResHist->Reset();
+    }
+    ResVsZHist->SetMarkerStyle(8);
+    ResVsZHist->GetYaxis()->SetTitleOffset(1.2);
+    gStyle->SetOptStat(0);
+    ResVsZHist->Draw("E1 P");
+    delete ResHist;
     input_file->Close();
+    delete input_file;
 }
 
 //Function to print the resolution vs generated multiplicity histogram (must be run on a file created with a custom multiplicity distribution between 0 and 50, giving discrete multiplicities with equal probabilities)
