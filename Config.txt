@@ -3,7 +3,7 @@
 Vertex Distribution: gaussian://:constant,gaussian,uniform,custom
 Vertex x,y,z: 0:0:0://:if constant (cm)
 Vertex meanx,sigmax,meany,sigmay,meanz,sigmaz: 0:0.01:0:0.01:0:5.3 ://:if gaussian (cm)
-Vertex xmin,xmax,ymin,ymax,zmin,zmax : xmin_value:xmax_value:ymin_value:ymax_value:zmin_value:zmax_value ://:if uniform (cm)
+Vertex xmin,xmax,ymin,ymax,zmin,zmax : -0.1:0.1:-0.1:0.1:-20:20 ://:if uniform (cm)
 Vertex x Input File: x_input_file_name ://:if custom
 Vertex y Input File: y_input_file_name ://:if custom
 Vertex z Input File: z_input_file_name ://:if custom
@@ -13,7 +13,7 @@ Vertex z histogram name: z_hist_name ://:if custom
 Multiplicity Distribution: custom ://:constant,gaussian,uniform,custom
 Multiplicity Value: 2://:if constant
 Multiplicity mean,sigma: mean_value:sigma_value ://:if gaussian
-Multiplicity min,max: minvalue:maxvalue ://:if uniform
+Multiplicity min,max: 1:50://:if uniform
 Multiplicity Input File: kinem.root ://:if custom
 Multiplicity Histogram name: hmul ://:if custom
 Tracks Distribution: custom ://:uniform,custom
@@ -22,8 +22,8 @@ Tracks Input File: kinem.root ://:if custom
 Tracks Eta histogram name: heta ://:if custom
 //:Simulation Configuration
 Multiple Scattering: on ://:on,off
-Number of events to simulate: 100000
-Output File Name: FirstSimulation.root
+Number of events to simulate: 200000
+Output File Name: Simulation.root
 Seed: 42
 //:Detector Geometry
 Beam Pipe Radius: 3 ://:(cm)
@@ -42,10 +42,10 @@ Detectors rPhi Resolution: 0.003://:(cm)
 //:Particle Information
 Momentum: 1000 ://:(MeV/c)
 //:Noise Configuration  
-Noise Entries Distribution: constant ://:constant,custom
-Noise Entries: 50 ://:if constant
-Noise Entries Input File: input_file_name ://:if custom
-Noise Entries Histogram name: hist_name ://:if custom
+Noise Entries Distribution: custom ://:constant,custom
+Noise Entries: 10 ://:if constant
+Noise Entries Input File: NoiseDistribution.root ://:if custom
+Noise Entries Histogram name: hist ://:if custom
 Is Noise: true ://:true,false
 //:Reco Configuration
 Estimate delta_phi: no ://:yes,no

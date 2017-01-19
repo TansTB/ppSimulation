@@ -25,6 +25,7 @@ public:
   void SetConstantEntriesNumber(Int_t entries);  //if constant, set entries number
   void SetCustomEntriesNumber(const char* input_file_name, const char* input_hist_name);  //if custom, set entries number
   void NewNoise(TClonesArray *ptr_noise); //adds noise hits to given hit array
+  void VariableEntries(Int_t i);//changes noise entries if i=1
 
   private:
   Noise(Noise &other);

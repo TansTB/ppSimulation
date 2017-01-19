@@ -66,6 +66,7 @@ private:
   TClonesArray &L2_hits_recorded = *ptr_L2_hits_recorded;
   Double_t BP_radius,BP_thickness,BP_X0,BP_Z,BP_theta0,L1_radius,L1_thickness,L1_X0,L1_Z,L1_theta0,L2_radius,zmax_detector,zmin_detector,zres_detector,rphires_detector,p;
   Int_t noise_entries;
+  Int_t noise_mode;//noise generator mode 0->constant 1->custom
 ClassDef(EventGenerator,1);
 };
 #endif

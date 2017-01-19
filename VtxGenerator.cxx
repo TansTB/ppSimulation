@@ -72,9 +72,9 @@ Point* VtxGenerator::GetUniformVtx(){
 }
 
 void VtxGenerator::SetUniformVtx(Double_t xmin, Double_t xmax, Double_t ymin, Double_t ymax, Double_t zmin, Double_t zmax){
-  this->x = x;
-  this->y = y;
-  this->z = z;
+  this->x = xmin;
+  this->y = ymin;
+  this->z = zmin;
   this->xmax = xmax;
   this->ymax = ymax;
   this->zmax = zmax;  

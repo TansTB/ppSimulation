@@ -97,18 +97,14 @@ void Reco::GetEventVertex(){
     z_sum = 0;
     bin_entries = 0;
 
-//condition to validate reconstruction ( maximum bin entries > 1.5 * second maximum bin entries)
-//     TCanvas *c1 = new TCanvas("c1","c1");
-//     vertex_candidates->DrawCopy();
-//     c1->SaveAs("dummy.png");
-//     cout <<binmax<< "\t"<<vertex_candidates->GetBinContent(binmax)<<"\t"<<my_bin_content<<"\t" <<sbinmax<< "\t"<< vertex_candidates->GetBinContent(sbinmax)<<"\t" << sbin_content <<  endl;
+//condition to validate reconstruction
     //reconstructed events
     if(my_bin_content==1)is_reconstructed=kFALSE;
-    if(my_bin_content==2){
-        if(vertex_candidates->GetBinContent(binmax)==1)is_reconstructed = kFALSE;
-        else is_reconstructed = my_bin_content > 2*sbin_content;
-    }
-    else if(my_bin_content>2){is_reconstructed = my_bin_content/10 >= sbin_content;}
+    else if(my_bin_content>=2 && my_bin_content < 10){
+            if(vertex_candidates->GetBinContent(binmax)==1)is_reconstructed = kFALSE;
+            else is_reconstructed = my_bin_content/2 > sbin_content;
+        }
+        else if(my_bin_content>=10)is_reconstructed = my_bin_content/10 >= sbin_content;
 
     if (is_reconstructed){
         //get highest bin z entries sum

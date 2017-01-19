@@ -46,7 +46,10 @@ void Noise::SetCustomEntriesNumber(const char* input_file_name, const char* inpu
   this->input_hist->SetDirectory(0);
   delete input_file;
   this->used_hist = kTRUE; 
-  this->entries = input_hist->GetRandom();     
 } 
+
+void Noise::VariableEntries(Int_t i){
+    if(i==1)this->entries = input_hist->GetRandom();     
+}
 
 
