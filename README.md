@@ -14,7 +14,7 @@ E'possibile compilare il programma per mezzo di un makefile e lanciarlo direttam
 
 make
 
-./ppSimulation ConfigFile     (sostituire ConfigFile con il nome del file di configurazione da utilizzare)
+./ppSimulation <b>ConfigFile</b>     (sostituire ConfigFile con il nome del file di configurazione da utilizzare)
 
 In alternativa il programma può essere compilato e lanciato direttamente da Root:
 
