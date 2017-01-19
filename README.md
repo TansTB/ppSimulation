@@ -10,7 +10,7 @@ Un quarto generatore,Noise, aggiunge ulteriori hit spuri a quelli già calcolati
 La seconda componente del software è dedicata alla ricostruzione del vertice.
 Tutto il processo è coordinato dal Run Manager che, sulla base del contenuto del file di configurazione (Config.txt), genera gli eventi richiesti, calcola i parametri necessari per la ricostruzione e ricostruisce il vertice per ogni singolo evento.
 
-E'possibile compilare il programma per mezzo di un makefile e lanciarlo direttamente dall'eseguibile (shell Linux), una volta modificato secondo le proprie necessità il file di configurazione . I comandi sono i seguenti:
+E' possibile compilare il programma per mezzo di un makefile e lanciarlo direttamente dall'eseguibile (shell Linux), una volta modificato secondo le proprie necessità il file di configurazione . I comandi sono i seguenti:
 
 make
 
