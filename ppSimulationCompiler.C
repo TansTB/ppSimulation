@@ -13,6 +13,7 @@ void ppSimulationCompiler(){
     gROOT->ProcessLine(".L TrackGenerator.cxx+");
     gROOT->ProcessLine(".L Noise.cxx+");
     gROOT->ProcessLine(".L EventGenerator.cxx+");
-    gROOT->ProcessLine(".L RunManager.cxx+");
     gROOT->ProcessLine(".L Reco.cxx+");
+    gROOT->ProcessLine(".L RunManager.cxx+");
+    
 }

@@ -22,12 +22,12 @@ void Track::SetComp(){
    comp[2]= Cos(theta);
 }
 
-void Track::Print(){
-   cout << "*********************************************************" << endl;
-   cout << "Theta       " << this->theta << endl <<"Phi         " << this->phi << "Componenti "; 
-   for (Int_t i=0; i<3; i++) {cout << comp[i] << "  ";}
-   cout << endl << "*********************************************************" << endl;
-}
+//void Track::Print(){
+ //  cout << "*********************************************************" << endl;
+   //cout << "Theta       " << this->theta << endl <<"Phi         " << this->phi << "Componenti "; 
+   //for (Int_t i=0; i<3; i++) {cout << comp[i] << "  ";}
+   //cout << endl << "*********************************************************" << endl;
+//}
 
 void Track::Rotate(Double_t theta_p, Double_t phi_p){
 

@@ -17,7 +17,7 @@ public:
   Double_t GetTheta(){return theta;}
   Double_t GetPhi(){return phi;}
   Double_t * GetComp(){return comp;}
-  void Print();
+  //void Print();
   
 private:
   void SetComp();
