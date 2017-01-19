@@ -28,9 +28,9 @@ Tutto il processo è coordinato dal Run Manager che, sulla base del contenuto di
 E'possibile compilare il programma per mezzo di un makefile e lanciarlo direttamente dall'eseguibile (da shell), una volta modificato secondo le proprie necessità il file di configurazione. 
 I comandi sono i seguenti:
 
-make ->Per compilare il programma da shell
+make -> Per compilare il programma da shell
 
-./ppSimulation <b>ConfigFile</b>     (sostituire <b>ConfigFile</b> con il nome del file di configurazione da utilizzare, è necessario che rispetti la struttura di Config.txt) ->per lanciare la simulazione
+./ppSimulation <b>ConfigFile</b>     (sostituire <b>ConfigFile</b> con il nome del file di configurazione da utilizzare, è necessario che rispetti la struttura di Config.txt) -> per lanciare la simulazione
 
 In alternativa il programma può essere compilato e lanciato direttamente da Root:
 
