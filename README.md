@@ -12,31 +12,31 @@ Tutto il processo è coordinato dal Run Manager che, sulla base del contenuto de
 
 E'possibile compilare il programma per mezzo di un makefile e lanciarlo direttamente dall'eseguibile (shell Linux), una volta modificato secondo le proprie necessità il file di configurazione . I comandi sono i seguenti:
 
-make
+<b>make
 
-./ppSimulation ConfigFile     (sostituire ConfigFile con il nome del file di configurazione da utilizzare)
+<b>./ppSimulation ConfigFile     (sostituire ConfigFile con il nome del file di configurazione da utilizzare)
 
 In alternativa il programma può essere compilato e lanciato direttamente da Root:
 
-.x ppSimulationCompiler.C
+<b>.x ppSimulationCompiler.C
 
-ppSimulation("ConfigFile")
+<b>ppSimulation("ConfigFile")
 
 L'output della simulazione (OutputFile) è un file ".root", il quale può essere letto da un'apposita macro (Displayer.cxx) che consente di visualizzare i risultati della simulazione:
 
-.x DisplayerCompiler.C 
+<b>.x DisplayerCompiler.C 
 
-ResolutionHistogram("OutputFile")                 
+<b>ResolutionHistogram("OutputFile")                 
 
-ResolutionVsGeneratedZHistogram("OutputFile")      
+<b>ResolutionVsGeneratedZHistogram("OutputFile")      
 
-ResolutionVsMultiplicityHistogram("OutputFile",Int_t numero_bin_istogramma)
+<b>ResolutionVsMultiplicityHistogram("OutputFile",Int_t numero_bin_istogramma)
 
-EfficiencyVsMultiplicityHistogram("OutputFile")
+<b>EfficiencyVsMultiplicityHistogram("OutputFile")
 
-EfficiencyVsMultiplicityHistogram1Sigma("OutputFile")
+<b>EfficiencyVsMultiplicityHistogram1Sigma("OutputFile")
 
-EfficiencyVsNoiseHistogram("OutputFile")
+<b>EfficiencyVsNoiseHistogram("OutputFile")
 
 In allegato sono presenti in formato pdf i plot da noi generati.
 
