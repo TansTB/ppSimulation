@@ -13,9 +13,9 @@
 
 using namespace std;
 
-int RunManager(char *config_file){
+void ppSimulation(string config_file){
   vector<vector<string> > v;
-  ifstream config(config_file);
+  ifstream config(config_file.c_str());
   cout<<"Reading configuration file..."<<endl;
   ColonParser(config,v);
   delete gRandom;
@@ -49,14 +49,13 @@ int RunManager(char *config_file){
   delete output_file;
   delete sim_watch;
   delete reco_watch;
-  return 0;
 }
 
 # ifndef __CINT__
 int main(int argc, char *argv[])
 {
   if(argc==1)cout << "CONFIG FILE MISSING"<< endl<<"TERMINATING..."<< endl;
-  else RunManager(argv[1]);
+  else ppSimulation(argv[1]);
   return 0;
 }
 # endif

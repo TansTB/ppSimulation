@@ -42,7 +42,7 @@ Detectors rPhi Resolution: 0.003://:(cm)
 //:Particle Information
 Momentum: 1000 ://:(MeV/c)
 //:Noise Configuration  
-Noise Entries Distribution: custom ://:constant,custom
+Noise Entries Distribution: constant ://:constant,custom
 Noise Entries: 10 ://:if constant
 Noise Entries Input File: NoiseDistribution.root ://:if custom
 Noise Entries Histogram name: hist ://:if custom

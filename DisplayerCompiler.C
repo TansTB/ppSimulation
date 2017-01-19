@@ -4,7 +4,7 @@
 #endif
 
 void DisplayerCompiler(){
-    gROOT->ProcessLine(".L Point.cxx++");
-    gROOT->ProcessLine(".L Hit.cxx++");
-    gROOT->ProcessLine(".L Displayer.cxx++");
+    gROOT->ProcessLine(".L Point.cxx+");
+    gROOT->ProcessLine(".L Hit.cxx+");
+    gROOT->ProcessLine(".L Displayer.cxx+");
 }

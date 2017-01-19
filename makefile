@@ -16,4 +16,4 @@ ppSimulation: $(OBJECTS)
 
 .PHONY: clean
 clean: 
-	rm -f *.o *_dict* *.d *.so ppSimulation
+	rm -f *.o *_dict* *.d *.so *.pcm ppSimulation
